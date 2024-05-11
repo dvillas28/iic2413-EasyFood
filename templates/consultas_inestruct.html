@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas Inestructuradas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+    <h1>Consultas Inestructuradas</h1>
+    <div class="container">
+
+        <!--con este form se llama a la funcion procesar, y luego recupera los datos-->
+        <form action="{{ url_for('procesar')}}" method="post" class="form">
+
+            <label for="text1">SELECT</label><br>
+            <input type="text" id="text1" name="text1"><br>
+
+            <label for="text2">FROM</label><br>
+            <input type="text" id="text2" name="text2"><br>
+
+            <label for="text3">WHERE</label><br>
+            <input type="text" id="text3" name="text3"><br>
+
+            <input type="submit" value="Enviar Consulta" class="form-button">
+        </form>
+        </form>
+
+    </div>
+
+
+</body>
+
+</html>

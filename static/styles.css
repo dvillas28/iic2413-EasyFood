@@ -1,6 +1,6 @@
 /* Estilos para index.html*/
 /*Si se motivan, pueden hacerlo mas bonito*/
-.formulario {
+.form {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -21,7 +21,7 @@ input[type="text"] {
     box-sizing: border-box;
 }
 
-.boton-enviar {
+.form-button {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
@@ -30,6 +30,6 @@ input[type="text"] {
     cursor: pointer;
 }
 
-.boton-enviar:hover {
+.form-button:hover {
     background-color: #45a049;
 }

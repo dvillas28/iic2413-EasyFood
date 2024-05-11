@@ -11,10 +11,26 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/menu_consultas')
+def consultas_estruct():
+    """
+    Consultas Estructuradas
+    """
+    return render_template('menu_consultas.html')
+
+
+@app.route('/consulta_inestruct')
+def consultas_inestruct():
+    """
+    Consultas Inestructuradas
+    """
+    return render_template('consultas_inestruct.html')
+
+
 @app.route('/procesar', methods=['POST'])
 def procesar():
     """
-    Funcion para procesar los inputs raw del usuario
+    Funcion para procesar los inputs raw del usuario de las consultas inestructuradas
     """
     text1 = request.form['text1']
     text2 = request.form['text2']
