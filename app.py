@@ -2,6 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
+# TODO: hacer el diccionario de tapos
+# TODO: hacer cada una de las consultas
+
+
+data = ["daniel", "gonzalo", "nico", "amogus"]
+
 
 @app.route('/')
 def index():
@@ -16,7 +22,7 @@ def consultas_estruct():
     """
     Consultas Estructuradas
     """
-    return render_template('menu_consultas.html')
+    return render_template('menu_consultas.html', data=data)
 
 
 @app.route('/consulta_inestruct')

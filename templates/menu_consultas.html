@@ -10,6 +10,62 @@
 <body>
     <h2 class="title">Consultas Predefinidas</h2>
     Consultas SQL
+    <!-- TODO: Crear las consultas asociadas a estas cosas cuando tengamos -->
+    <ol>
+        <li>
+            Mostrar todos los restaurantes que ofrezcan el plato <input placeholder="nombre_plato"> y que este
+            disponible. <button>consultar</button>
+        </li>
+
+        <li>
+            Mostrar todos los pedidos conretados del usuario con email <input placeholder="odiobdd@gmail.com"> y su
+            gasto mensual
+            <button>consultar</button>
+        </li>
+
+        <li>
+            Mostrar todos los pedidos concretados y cancelados y el valor total de ellos <button>consultar</button>
+        </li>
+
+        <li>
+            Mostrar todos los platos con el tipo <input placeholder="Desplegable">, ofrecidos por el restaurant <input
+                placeholder="montaña china"> y con opciones de delivery <input placeholder="express">
+            <button>consultar</button>
+        </li>
+
+        <li>
+            Mostrar todos los platos que pertenezcan al estilo <!--(lo mismo que el tipo ?)--> <input
+                placeholder="comida china"> y que tengan un precio menor a <input>
+        </li>
+
+        <li>
+            Dado un cliente ingresado por el usuario (email string), muestre todas las restaurantes a las que tiene
+            acceso el usuario de email <input> con sus suscripciones. <button>consultar</button>
+        </li>
+
+        <li>Muestre la suma de dinero gastada por cada cliente en pedidos no incluidas en planes de suscripcion.
+            <button>consultar</button>
+        </li>
+
+        <li>Muestre todos los platos y los restaurantes que los ofrecen <button>consultar</button> </li>
+
+        <li>
+            Dado un numero <input> ingresado por el usuario, muestre todos las evaluaciones de Clientes, Delivery,
+            Despachador superiores o iguales a el. <button>consultar</button>
+        </li>
+
+        <li>
+            Muestre todos los platos que contengan <input> en sus ingredientes. <button>consultar</button>
+        </li>
+
+    </ol>
+
+    <label for="dog-names">Choose a dog name:</label>
+    <select name="dog-names" id="dog-names">
+        {% for name in data %}
+        <option>{{ name }}</option>
+        {% endfor %}
+    </select>
 
 </body>
 
