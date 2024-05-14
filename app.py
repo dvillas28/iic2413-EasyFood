@@ -2,11 +2,20 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
+
 # TODO: hacer el diccionario de tapos
 # TODO: hacer cada una de las consultas
-
-
 data = ["daniel", "gonzalo", "nico", "amogus"]
+
+example_data = {
+    "labels": ["Name", "Age", "Country", "Height"],
+    "rows": [
+        ["Daniel", 21, "Chile", 125],
+        ["Gonzalo", 22, "Chile", 143],
+        ["Nico", 23, "Chile", 134],
+        ["Amogus", 24, "Chile", 134],
+    ]
+}
 
 
 @app.route('/')
@@ -71,8 +80,8 @@ def result():
 
     # y entregarselo al template para mostrar la tabla
 
-    # TODO: hacer la tabla con la libreria del js
-    return render_template('result.html', data=data)
+    # FIXME: example data deberia ser extraido desde procesar()
+    return render_template('result.html', data=data, result=example_data)
 
 
 if __name__ == '__main__':

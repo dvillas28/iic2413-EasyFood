@@ -5,3 +5,16 @@
     - si es que van metiendo mas dependencias, agregar con `pip freeze > requirements.txt`
 
 2. `python3 app.py`
+
+# Fomato para entregar al frontend
+```python
+example_data = {
+    "labels": ["Name", "Age", "Country"],
+    "rows": [
+        ["Daniel", 21, "Chile"],
+        ["Gonzalo", 22, "Chile"],
+        ["Nico", 23, "Chile"],
+        ["Amogus", 24, "Chile"],
+    ]
+}
+```

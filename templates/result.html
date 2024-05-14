@@ -15,6 +15,25 @@
     FROM {{ data[1] }}<br>
     WHERE {{ data[2] }};<br>
 
+    <table border="1">
+        <thead>
+            <tr>
+                {% for label in result["labels"] %}
+                <th>{{ label }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in result["rows"] %}
+            <tr>
+                {% for value in row %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 </body>
 
 </html>

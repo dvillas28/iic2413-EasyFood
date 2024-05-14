@@ -10,15 +10,18 @@
 <body>
     <h2 class="title">Consultas Predefinidas</h2>
     Consultas SQL
-    <!-- TODO: Crear las consultas asociadas a estas cosas cuando tengamos -->
+    <!-- TODO: Crear las consultas asociadas a estas cosas cuando se pueda-->
+    <!-- TODO: agregar todos los argumentos de identifiacion de los campos-->
     <ol>
-        <li> 
-            Mostrar todos los restaurantes que ofrezcan el plato <input placeholder="nombre_plato"> y que esté disponible.
+        <li>
+            Mostrar todos los restaurantes que ofrezcan el plato <input placeholder="nombre_plato"> y que esté
+            disponible.
             <button>consultar</button>
         </li>
 
         <li>
-            Mostrar todos los pedidos concretados del usuario con email <input placeholder="odiobdd@gmail.com"> y su gasto mensual.
+            Mostrar todos los pedidos concretados del usuario con email <input placeholder="odiobdd@gmail.com"> y su
+            gasto mensual.
             <button>consultar</button>
         </li>
 
@@ -28,7 +31,8 @@
         </li>
 
         <li>
-            Mostrar todos los platos de tipo <input placeholder="Desplegable"> con los restaurantes que lo ofrecen y sus opciones de delivery.
+            Mostrar todos los platos de tipo <input placeholder="Desplegable"> con los restaurantes que lo ofrecen y sus
+            opciones de delivery.
             <button>consultar</button>
         </li>
 
@@ -38,7 +42,8 @@
         </li>
 
         <li>
-            Mostrar todos los restaurantes que el usuaria de email <input placeholder="odiobdd@gmail.com"> tiene disponible con sus suscripciones actuales.
+            Mostrar todos los restaurantes que el usuaria de email <input placeholder="odiobdd@gmail.com"> tiene
+            disponible con sus suscripciones actuales.
             <button>consultar</button>
         </li>
 
@@ -53,7 +58,7 @@
         </li>
 
         <li>
-            Mostrar todas las evaluaciones de clientes, delivery y despachador superiores o iguales a 
+            Mostrar todas las evaluaciones de clientes, delivery y despachador superiores o iguales a
             <select>
                 {% for name in (1,2,3,4,5) %}
                 <option>{{ name }}</option>
