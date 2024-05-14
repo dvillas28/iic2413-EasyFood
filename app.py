@@ -17,7 +17,7 @@ def consultas_estruct():
     Consultas Estructuradas
     """
     # TODO: solicitar los datos para colocar en los cuadros desplegables
-    data = ["daniel", "gonzalo", "nico", "amogus"]  # ejemplo
+    data = ['daniel', 'gonzalo', 'nico', 'amogus']  # ejemplo
     return render_template('menu_consultas.html', data=data)
 
 
@@ -43,6 +43,7 @@ def process_inestruct_query():
     if text1 and text2:
         # enviamos estos argumentos a la funcion result, en la ruta /resultado, y ejecutarla
         return redirect(url_for('result',
+                                query_type=0,
                                 text1=text1,
                                 text2=text2,
                                 text3=text3))
@@ -53,18 +54,38 @@ def process_inestruct_query():
                                 message='Campo SELECT/FROM vacio'))
 
 
+# TODO: hacer lo mismo para las consultas estructuradas
+def process_estruct_query():
+    """
+    Funcion para procesar los inputs de las consultas estructuradas
+    """
+    # tomar el tipo de query y los campos
+    # enviarselos a result(query_type, args*)
+    pass
+
+
 @app.route('/result_query')
 def result():
     """
     La funcion para mostrar el resultado de la consulta
     """
-    # FIXME: si es una consulta inestrucurada, se crea el diccionario 0 se envia al back
+    # obtener el tipo de la consulta 0: inestruc, 1: estruc
+    query_type = int(request.args.get('query_type'))
 
-    # los inputs deberian estar "limpios" en este punto
-    texto1 = request.args.get('text1')
-    texto2 = request.args.get('text2')
-    texto3 = request.args.get('text3')
-    data = [texto1, texto2, texto3]
+    # TODO: si es una consulta inestrucurada, se crea el diccionario 0 se envia al back
+    if query_type == 0:
+        # los inputs deberian estar "limpios" en este punto
+        texto1 = request.args.get('text1')
+        texto2 = request.args.get('text2')
+        texto3 = request.args.get('text3')
+
+        inestruct_dict = {query_type: 0,
+                          'SELECT': texto1,
+                          'FROM': texto2,
+                          'WHERE': texto3}
+
+        # FIXME: esto es solo para mostrar de momento
+        data = [texto1, texto2, texto3]
 
     # enviarselos al backend
 
@@ -72,12 +93,12 @@ def result():
 
     # formato para mostrar los datos en tabla
     example_data = {
-        "labels": ["Name", "Age", "Country", "Height"],
-        "rows": [
-            ["Daniel", 21, "Chile", 125],
-            ["Gonzalo", 22, "Chile", 143],
-            ["Nico", 23, "Chile", 134],
-            ["Amogus", 24, "Chile", 134],
+        'labels': ['Name', 'Age', 'Country', 'Height'],
+        'rows': [
+            ['Daniel', 21, 'Chile', 125],
+            ['Gonzalo', 22, 'Chile', 143],
+            ['Nico', 23, 'Chile', 134],
+            ['Amogus', 24, 'Chile', 134],
         ]
     }
 
