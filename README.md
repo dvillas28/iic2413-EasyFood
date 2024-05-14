@@ -18,3 +18,12 @@ example_data = {
     ]
 }
 ```
+
+# Formato para errores
+```python
+err = {
+    "error_type": {} # tipo del error (input nulo, falla de sintaxis de en la consulta),
+    "message": {} # mensaje a mostrar del error
+
+}
+```

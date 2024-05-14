@@ -3,21 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 
-# TODO: hacer el diccionario de tapos
-# TODO: hacer cada una de las consultas
-data = ["daniel", "gonzalo", "nico", "amogus"]
-
-example_data = {
-    "labels": ["Name", "Age", "Country", "Height"],
-    "rows": [
-        ["Daniel", 21, "Chile", 125],
-        ["Gonzalo", 22, "Chile", 143],
-        ["Nico", 23, "Chile", 134],
-        ["Amogus", 24, "Chile", 134],
-    ]
-}
-
-
 @app.route('/')
 def index():
     """
@@ -31,6 +16,8 @@ def consultas_estruct():
     """
     Consultas Estructuradas
     """
+    # TODO: solicitar los datos para colocar en los cuadros desplegables
+    data = ["daniel", "gonzalo", "nico", "amogus"]  # ejemplo
     return render_template('menu_consultas.html', data=data)
 
 
@@ -43,24 +30,27 @@ def consultas_inestruct():
 
 
 @app.route('/procesar', methods=['POST'])
-def procesar():
+def process_inestruct_query():
     """
     Funcion para procesar los inputs raw del usuario de las consultas inestructuradas
     """
+    # solicitar los textos de los campos SELECT, FROM Y WHERE
     text1 = request.form['text1']
     text2 = request.form['text2']
     text3 = request.form['text3']
 
-    print("Preprocesamiento de raw text")
-    print(f'SELECT {text1}')
-    print(f'FROM {text2}')
-    print(f'WHERE {text3}')
+    # verificar que text1 y text2 sean no nulos
+    if text1 and text2:
+        # enviamos estos argumentos a la funcion result, en la ruta /resultado, y ejecutarla
+        return redirect(url_for('result',
+                                text1=text1,
+                                text2=text2,
+                                text3=text3))
 
-    # TODO: verificar que text1 y text2 sean no nulos
-    # enviar a una pagina de error o reiniciar el formulario con un mensaje que se yo
-
-    # enviamos estos argumentos a la funcion result, en la ruta /resultado, y ejecutarla
-    return redirect(url_for('result', text1=text1, text2=text2, text3=text3))
+    else:
+        return redirect(url_for('error',
+                                error_type='NullInput',
+                                message='Campo SELECT/FROM vacio'))
 
 
 @app.route('/result_query')
@@ -68,6 +58,8 @@ def result():
     """
     La funcion para mostrar el resultado de la consulta
     """
+    # FIXME: si es una consulta inestrucurada, se crea el diccionario 0 se envia al back
+
     # los inputs deberian estar "limpios" en este punto
     texto1 = request.args.get('text1')
     texto2 = request.args.get('text2')
@@ -78,10 +70,38 @@ def result():
 
     # recibir lo que sea del backend
 
+    # formato para mostrar los datos en tabla
+    example_data = {
+        "labels": ["Name", "Age", "Country", "Height"],
+        "rows": [
+            ["Daniel", 21, "Chile", 125],
+            ["Gonzalo", 22, "Chile", 143],
+            ["Nico", 23, "Chile", 134],
+            ["Amogus", 24, "Chile", 134],
+        ]
+    }
+
     # y entregarselo al template para mostrar la tabla
 
-    # FIXME: example data deberia ser extraido desde procesar()
+    # if error 0, irnos a la pestalla de error y enviar esos datos
+
     return render_template('result.html', data=data, result=example_data)
+
+
+@app.route('/error')
+def error():
+    """
+    Funcion para mostrar un mensaje de error
+    """
+    error_type = request.args.get('error_type')
+    message = request.args.get('message')
+
+    err = {
+        'error_type': error_type,
+        'message': message
+    }
+
+    return render_template('error.html', err=err)
 
 
 if __name__ == '__main__':

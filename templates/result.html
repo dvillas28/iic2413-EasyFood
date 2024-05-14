@@ -13,8 +13,11 @@
     <!--con podemos extraer los argumentos que le entregamos al la template-->
     SELECT {{ data[0] }}<br>
     FROM {{ data[1] }}<br>
+    {% if data[2] %}
     WHERE {{ data[2] }};<br>
+    {% endif %}
 
+    <!--mostrar tabla con los resultados-->
     <table border="1">
         <thead>
             <tr>
