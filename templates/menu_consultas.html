@@ -11,75 +11,93 @@
     <h2 class="title">Consultas Predefinidas</h2>
     Consultas SQL
     <!-- TODO: Crear las consultas asociadas a estas cosas cuando se pueda-->
-    <!-- TODO: agregar todos los argumentos de identifiacion de los campos-->
-    <ol>
-        <li>
-            Mostrar todos los restaurantes que ofrezcan el plato <input placeholder="nombre_plato"> y que esté
-            disponible.
-            <button>consultar</button>
-        </li>
+    <form action="{{ url_for('process_estruct_query')}}" method="post" class="form">
+        <ol>
+            <!-- Query 1 -->
+            <li>
+                Mostrar todos los restaurantes que ofrezcan el plato <input type="text" name="text1" id="text1"
+                    placeholder="nombre_plato"> y que esté
+                disponible.
+                <button type="submit" name="button" value="1">consultar</button>
+            </li>
 
-        <li>
-            Mostrar todos los pedidos concretados del usuario con email <input placeholder="odiobdd@gmail.com"> y su
-            gasto mensual.
-            <button>consultar</button>
-        </li>
+            <!-- Query 2 -->
+            <li>
+                Mostrar todos los pedidos concretados del usuario con email <input type="text" name="text2"
+                    placeholder="email@gmail.com"> y su
+                gasto mensual.
+                <button type="submit" name="button" value="2">consultar</button>
+            </li>
 
-        <li>
-            Mostrar todos los pedidos concretados o cancelados y el valor total de ellos.
-            <button>consultar</button>
-        </li>
+            <!-- Query 3 -->
+            <li>
+                Mostrar todos los pedidos concretados o cancelados y el valor total de ellos.
+                <button type="submit" name="button" value="3">consultar</button>
+            </li>
 
-        <li>
-            Mostrar todos los platos de tipo <input placeholder="Desplegable"> con los restaurantes que lo ofrecen y sus
-            opciones de delivery.
-            <button>consultar</button>
-        </li>
+            <!-- Query 4 -->
+            <li>
+                Mostrar todos los platos de tipo <input type="text" name="text4" placeholder="Desplegable"> con los
+                restaurantes que lo ofrecen y
+                sus
+                opciones de delivery.
+                <button type="submit" name="button" value="4">consultar</button>
+            </li>
 
-        <li>
-            Mostrar todos los platos de estilo <input placeholder="Desplegable"> con sus restricciones.
-            <button>consultar</button>
-        </li>
+            <!-- Query 5 -->
+            <li>
+                Mostrar todos los platos de estilo <input type="text" name="text5" placeholder="Desplegable"> con sus
+                restricciones.
+                <button type="submit" name="button" value="5">consultar</button>
+            </li>
 
-        <li>
-            Mostrar todos los restaurantes que el usuaria de email <input placeholder="odiobdd@gmail.com"> tiene
-            disponible con sus suscripciones actuales.
-            <button>consultar</button>
-        </li>
+            <!-- Query 6 -->
+            <li>
+                Mostrar todos los restaurantes que el usuaria de email <input type="text" name="text6"
+                    placeholder="email@gmail.com"> tiene
+                disponible con sus suscripciones actuales.
+                <button type="submit" name="button" value="6">consultar</button>
+            </li>
 
-        <li>
-            Mostrar la cantidad de dinero gastada por cada cliente en pedidos no incluidas en planes de suscripcion.
-            <button>consultar</button>
-        </li>
+            <!-- Query 7 -->
+            <li>
+                Mostrar la cantidad de dinero gastada por cada cliente en pedidos no incluidas en planes de suscripcion.
+                <button type="submit" name="button" value="7">consultar</button>
+            </li>
 
-        <li>
-            Mostrar todos los platos y los restaurantes que los ofrecen.
-            <button>consultar</button>
-        </li>
+            <!-- Query 8 -->
+            <li>
+                Mostrar todos los platos y los restaurantes que los ofrecen.
+                <button type="submit" name="button" value="8">consultar</button>
+            </li>
 
-        <li>
-            Mostrar todas las evaluaciones de clientes, delivery y despachador superiores o iguales a
-            <select>
-                {% for name in (1,2,3,4,5) %}
-                <option>{{ name }}</option>
-                {% endfor %}
-            </select>.
-            <button>consultar</button>
-        </li>
+            <!-- Query 9 -->
+            <li>
+                Mostrar todas las evaluaciones de clientes, delivery y despachador superiores o iguales a
+                <select name="text9">
+                    {% for i in range(1,6) %}
+                    <option value="{{ i|string}}">{{ i }}</option>
+                    {% endfor %}
+                </select>.
+                <button type="submit" name="button" value="9">consultar</button>
+            </li>
 
-        <li>
-            Mostrar todos los platos que contengan el alergeno <input> en sus ingredientes.
-            <button>consultar</button>
-        </li>
+            <!-- Query 10 -->
+            <li>
+                Mostrar todos los platos que contengan el alergeno <input type="text" name="text10"
+                    placeholder="alergeno"> en sus
+                ingredientes.
+                <button type="submit" name="button" value="10">consultar</button>
+            </li>
 
-    </ol>
+        </ol>
 
-    <label for="dog-names">Choose a dog name:</label>
-    <select name="dog-names" id="dog-names">
-        {% for name in data %}
-        <option>{{ name }}</option>
-        {% endfor %}
-    </select>
+        <label for="dog-names">Choose a dog name:</label>
+        <select name="dog-names" id="dog-names">
+            {% for name in data %}
+            <option>{{ name }}</option>
+            {% endfor %}
+        </select>
 
 </body>
 

@@ -14,7 +14,7 @@ def index():
 @app.route('/menu_consultas')
 def consultas_estruct():
     """
-    Consultas Estructuradas
+    Funcion para mostrar el menu inicial desplegable de las consultas estructuradas
     """
     # TODO: solicitar los datos para colocar en los cuadros desplegables
     data = ['daniel', 'gonzalo', 'nico', 'amogus']  # ejemplo
@@ -29,7 +29,7 @@ def consultas_inestruct():
     return render_template('consultas_inestruct.html')
 
 
-@app.route('/procesar', methods=['POST'])
+@app.route('/procesar_inestruct', methods=['POST'])
 def process_inestruct_query():
     """
     Funcion para procesar los inputs raw del usuario de las consultas inestructuradas
@@ -54,14 +54,24 @@ def process_inestruct_query():
                                 message='Campo SELECT/FROM vacio'))
 
 
-# TODO: hacer lo mismo para las consultas estructuradas
+@app.route('/procesar_estruct', methods=['POST'])
 def process_estruct_query():
     """
-    Funcion para procesar los inputs de las consultas estructuradas
+    Funcion para procesar los inputs raw de las consultas estructuradas
     """
     # tomar el tipo de query y los campos
+    button_number = int(request.form['button'])
+
+    text_value = request.form.get(f'text{button_number}')
+    data = [text_value]
+
+    print(f'button number raw: {button_number}')
+    print(f'data raw: {data}')
     # enviarselos a result(query_type, args*)
-    pass
+
+    return redirect(url_for('result',
+                            query_type=button_number,
+                            query_data=data))
 
 
 @app.route('/result_query')
@@ -72,22 +82,33 @@ def result():
     # obtener el tipo de la consulta 0: inestruc, 1: estruc
     query_type = int(request.args.get('query_type'))
 
-    # TODO: si es una consulta inestrucurada, se crea el diccionario 0 se envia al back
+    # empaquetamiento de datos consulta inestructurada
     if query_type == 0:
-        # los inputs deberian estar "limpios" en este punto
-        texto1 = request.args.get('text1')
-        texto2 = request.args.get('text2')
-        texto3 = request.args.get('text3')
+        text1 = request.args.get('text1')
+        text2 = request.args.get('text2')
+        text3 = request.args.get('text3')
+        data = [text1, text2, text3]
 
-        inestruct_dict = {query_type: 0,
-                          'SELECT': texto1,
-                          'FROM': texto2,
-                          'WHERE': texto3}
+        query_dict = {"query_type": 0,
+                      'SELECT': data[0],
+                      'FROM': data[1],
+                      'WHERE': data[2]}
 
-        # FIXME: esto es solo para mostrar de momento
-        data = [texto1, texto2, texto3]
+    # empaquetamiento de datos consulta estructurada
+    elif query_type != 0:
+        data = request.args.get('query_data')
 
-    # enviarselos al backend
+        # las consultas 3, 7 y 8, 9 no reciben input
+        if not data and query_type not in [3, 7, 8, 9]:
+            return redirect(url_for('error',
+                                    error_type='EmptyFieldError',
+                                    message='Consulta con campo vacio'))
+
+        query_dict = {"query_type": query_type,
+                      'data': data}
+
+    # enviar query_dict al backend
+    print(f'TO SEND: {query_dict}')
 
     # recibir lo que sea del backend
 
@@ -106,7 +127,7 @@ def result():
 
     # if error 0, irnos a la pestalla de error y enviar esos datos
 
-    return render_template('result.html', data=data, result=example_data)
+    return render_template('result.html', result=example_data, query_dict=query_dict)
 
 
 @app.route('/error')

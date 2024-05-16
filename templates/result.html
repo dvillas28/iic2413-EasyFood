@@ -10,14 +10,8 @@
 <body>
 
     <h1>Aqui deberia aparecer el resultado de la consulta</h1>
-    <!--con podemos extraer los argumentos que le entregamos al la template-->
-    SELECT {{ data[0] }}<br>
-    FROM {{ data[1] }}<br>
-    {% if data[2] %}
-    WHERE {{ data[2] }};<br>
-    {% endif %}
-
     <!--mostrar tabla con los resultados-->
+    <h2>{{ query_dict }}</h2>
     <table border="1">
         <thead>
             <tr>
