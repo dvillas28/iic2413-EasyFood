@@ -19,7 +19,7 @@ with open("data/restaurantes.csv", "r", encoding='mac_roman') as file:
         j += 1
 
 i = 0
-
+malos = 0
 
 for index, row in data.items():
     nombre = row[0]
@@ -37,7 +37,7 @@ for index, row in data.items():
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
                     """,
                     (nombre, vigente, estilo, reparto_min, sucursal, direccion, telefono, area))
-        conn.commit()
+        # conn.commit()
         print(f'{i} - OK\n')
 
     except psycopg2.IntegrityError as e:
@@ -59,7 +59,8 @@ for index, row in data.items():
                     """,
                         (nombre, vigente, estilo, reparto_min, sucursal, direccion, telefono[:11], area))
             print(f"{i} - NOK2 fixed {telefono}\n")
-            conn.commit()
+            malos += 1
+            # conn.commit()
 
             # reinsertar
 
@@ -73,9 +74,10 @@ for index, row in data.items():
                     """,
                         (nombre, vigente, estilo, reparto_min, sucursal, direccion[30:], telefono[:11], area))
             print(f"{i} - NOK2 fixed direccion")
-            conn.commit()
+            # conn.commit()
 
     i += 1
 
 cur.close()
 conn.close()
+print(malos)
