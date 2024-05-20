@@ -23,15 +23,16 @@ for i in range(len(lineas)):
 
             continue
     else:
-        nombres_limpios.append(lineas[i])
 
-data = []
-titles = nombres_limpios.pop(0)
+        dato = (lineas[i][1], lineas[i][0], lineas[i][2], lineas[i][3])
+        nombres_limpios.append(dato)
+
+
+# quitamos las tuplas repetidas
+data_no_repetidos = []
 for lista in nombres_limpios:
-    cliente_dict = {}
-    for i in range(len(titles)):
-        cliente_dict[titles[i]] = lista[i]
-    data.append(cliente_dict)
+    if lista not in data_no_repetidos:
+        data_no_repetidos.append(lista)
 
 # for dato in data:
 #     print(dato)
@@ -43,27 +44,22 @@ insert_query = """
     INSERT INTO usuario (email, nombre, telefono, clave) VALUES (%s, %s, %s, %s);
 """
 
-for dato in data:
+subidos = 0
+no_subidos = 0
+for dato in data_no_repetidos:
     try:
         cur.execute(
-            insert_query, (dato['email'], dato['cliente'], dato['telefono'], dato['clave']))
-        conn.commit()
+            insert_query, dato)
+        # conn.commit()
+        subidos += 1
 
     except psy2.Error as e:
         conn.rollback()
+        print(dato)
+        print(e)
+        no_subidos += 1
 
-        state = e.diag.sqlstate
-
-        if state == '23505':  # violacion de unicidad
-            print(
-                f"{state} - Restriccion de IC: La llave primaria {dato['email']} ya existe - Accion: Ignorar")
-
-        elif state == '22001':  # violacion de integridad
-            print(
-                f"{state} - Restriccion de IC: existe un campo demasiado largo - Accion: Ignorar")
-
-        continue
-
-
+print(
+    f'Se subieron {subidos} registros y no se subieron {no_subidos} registros: {no_subidos / subidos * 100:.2f}%')
 cur.close()
 conn.close()
