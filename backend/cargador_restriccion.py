@@ -4,7 +4,7 @@ import csv
 
 # cargar los datos brutos
 lineas = []
-with open('backend/data/clientes.csv', mode='r', encoding='mac_roman') as file:
+with open('backend/data/platos.csv', mode='r', encoding='utf-8') as file:
     reader = csv.reader(file, delimiter=';')
     encabezado = next(reader) # Saltar la fila de encabezado
     for fila in reader:
@@ -13,7 +13,7 @@ with open('backend/data/clientes.csv', mode='r', encoding='mac_roman') as file:
 # quitamos las tuplas repetidas
 data_no_repetidos = []
 for fila in lineas:
-    tupla = (fila[1], fila[0], fila[2], str(hash(fila[3]))[:30] )
+    tupla = tuple([fila[5]])
     if tupla not in data_no_repetidos:
         data_no_repetidos.append(tupla)
 
@@ -22,7 +22,7 @@ conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO usuario (email, nombre, telefono, clave) VALUES (%s, %s, %s, %s);
+    INSERT INTO restriccion (nombre) VALUES (%s);
 """
 
 subidos = 0
