@@ -10,32 +10,12 @@ with open('backend/data/clientes.csv', mode='r', encoding='mac_roman') as file:
     for fila in reader:
         lineas.append(fila)
 
-
-nombres_limpios = []
-empty_name = ''
-
-# limpiar los nombres mal escritos
-for i in range(len(lineas)):
-
-    if len(lineas[i]) == 1:
-        empty_name = lineas[i][0]
-
-        if i + 1 < len(lineas):
-            if '"' in lineas[i + 1][0]:
-                lineas[i + 1][0] = (empty_name + '' + lineas[i + 1][0])[1:-1]
-
-            continue
-    else:
-
-        dato = (lineas[i][1], lineas[i][0], lineas[i][2], lineas[i][3])
-        nombres_limpios.append(dato)
-
-
 # quitamos las tuplas repetidas
 data_no_repetidos = []
-for lista in nombres_limpios:
-    if lista not in data_no_repetidos:
-        data_no_repetidos.append(lista)
+for fila in lineas:
+    dato = (fila[1], fila[0], fila[2], str(hash(fila[3]))[:30] )
+    if dato not in data_no_repetidos:
+        data_no_repetidos.append(dato)
 
 # for dato in data:
 #     print(dato)
@@ -53,7 +33,7 @@ for dato in data_no_repetidos:
     try:
         cur.execute(
             insert_query, dato)
-        # conn.commit()
+        conn.commit()
         subidos += 1
 
     except psy2.Error as e:
