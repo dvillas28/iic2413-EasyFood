@@ -10,20 +10,30 @@ with open('backend/data/platos.csv', mode='r', encoding='utf-8') as file:
     for fila in reader:
         lineas.append(fila)
 
-# quitamos las tuplas repetidas
+
+restriccion = dict()
+nombre=[]
+indice = 1
+for fila in lineas:
+    if fila[5] not in nombre and (len(fila[5]) <= 30):
+        nombre.append(fila[5])
+        restriccion[fila[5]] = indice
+        indice += 1
+
 data_no_repetidos = []
 for fila in lineas:
-    ingredientes = map(lambda x: tuple([x.strip(' ').strip('.')]), fila[6].split(','))
-    for tupla in ingredientes:
-        if tupla not in data_no_repetidos:
-            data_no_repetidos.append(tupla)
+    tupla = (fila[0], restriccion[fila[5]])
+    if tupla not in data_no_repetidos and (len(fila[1]) <= 30):
+        data_no_repetidos.append(tupla)
 
+
+# quitamos las tuplas repetidas
 
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO ingrediente (nombre) VALUES (%s);
+    INSERT INTO aplica (plato_id, restriccion_id) VALUES (%s, %s);
 """
 
 subidos = 0
