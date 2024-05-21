@@ -1,11 +1,14 @@
 import psycopg2 as psy2
 import params as p
+import csv
 
 # cargar los datos brutos
-with open('backend/data/clientes.csv', 'r', encoding='mac_roman') as file:
-    lineas = file.readlines()
-    for i in range(len(lineas)):
-        lineas[i] = lineas[i].strip().split(';')
+lineas = []
+with open('backend/data/clientes.csv', mode='r', encoding='mac_roman') as file:
+    reader = csv.reader(file, delimiter=';')
+    encabezado = next(reader) # Saltar la fila de encabezado
+    for fila in reader:
+        lineas.append(fila)
 
 
 nombres_limpios = []
