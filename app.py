@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from backend import query as q
 
 app = Flask(__name__)
 
@@ -89,10 +90,12 @@ def result():
         text3 = request.args.get('text3')
         data = [text1, text2, text3]
 
-        query_dict = {"query_type": 0,
-                      'SELECT': data[0],
-                      'FROM': data[1],
-                      'WHERE': data[2]}
+        if text3:
+            query_dict = {"query_type": 0.1,
+                          'data': (data[0], data[1], data[2])}
+        else:
+            query_dict = {"query_type": 0.0,
+                          'data': (data[0], data[1])}
 
     # empaquetamiento de datos consulta estructurada
     elif query_type != 0:
@@ -108,11 +111,12 @@ def result():
                       'data': data}
 
     # enviar query_dict al backend
-    print(f'TO SEND: {query_dict}')
+    print(f'FRONTEND DATA TO SEND: {query_dict}')
 
     # recibir lo que sea del backend
+    result = q.get_query_result(query_dict)
 
-    # formato para mostrar los datos en tabla
+    # formato para mostrar los datos en tabla TODO: quitar esto
     example_data = {
         'labels': ['Name', 'Age', 'Country', 'Height'],
         'rows': [
@@ -123,11 +127,17 @@ def result():
         ]
     }
 
-    # y entregarselo al template para mostrar la tabla
-
     # if error 0, irnos a la pestalla de error y enviar esos datos
+    if result['result'] == 0:
+        # TODO: retornar error
+        return redirect(url_for('error',
+                                error_type='QueryError',
+                                message='Error en la consulta'))
 
-    return render_template('result.html', result=example_data, query_dict=query_dict)
+    else:
+        # y entregarselo al template para mostrar la tabla
+        # TODO: quitar estos dos argumentos
+        return render_template('result.html', result=example_data, query_dict=query_dict)
 
 
 @app.route('/error')
