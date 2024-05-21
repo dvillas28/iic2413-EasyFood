@@ -12,43 +12,43 @@ conn_params = {
 diccionario_data = {
 
     "calificacion": {
-        "path": os.path.join('backend','data','calificacion.csv'),
-        "enconding": "ascii"
+        "path": os.path.join('backend', 'data', 'calificacion.csv'),
+        "encoding": "ascii"
     },
 
     "cldeldes": {
-        "path": os.path.join('backend','data','cldeldes.csv'),
-        "enconding": "ascii"
+        "path": os.path.join('backend', 'data', 'cldeldes.csv'),
+        "encoding": "ascii"
     },
 
     "clientes": {
-        "path": os.path.join('backend','data','clientes.csv'),
-        "enconding": "ascii"
+        "path": os.path.join('backend', 'data', 'clientes.csv'),
+        "encoding": "ascii"
     },
 
     "comuna": {
-        "path": os.path.join('backend','data','comuna.csv'),
-        "enconding": "mac_roman"
+        "path": os.path.join('backend', 'data', 'comuna.csv'),
+        "encoding": "mac_roman"
     },
 
     "pedidos": {
-        "path": os.path.join('backend','data','pedidos.csv'),
-        "enconding": "windows-1252"
+        "path": os.path.join('backend', 'data', 'pedidos.csv'),
+        "encoding": "windows-1252"
     },
 
     "platos": {
-        "path": os.path.join('backend','data','platos.csv'),
-        "enconding": "utf-8"
+        "path": os.path.join('backend', 'data', 'platos.csv'),
+        "encoding": "utf-8"
     },
 
     "restaurantes": {
-        "path": os.path.join('backend','data','restaurantes.csv'),
-        "enconding": "mac_roman"
+        "path": os.path.join('backend', 'data', 'restaurantes.csv'),
+        "encoding": "mac_roman"
     },
 
     "suscripciones": {
-        "path": os.path.join('backend','data','suscripciones.csv'),
-        "enconding": "ascii"
+        "path": os.path.join('backend', 'data', 'suscripciones.csv'),
+        "encoding": "ascii"
     },
 
 
