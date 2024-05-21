@@ -1,14 +1,9 @@
 import psycopg2 as psy2
 import params as p
-import csv
+from archivos import get_data
 
 # cargar los datos brutos
-lineas = []
-with open('backend/data/clientes.csv', mode='r', encoding='mac_roman') as file:
-    reader = csv.reader(file, delimiter=';')
-    encabezado = next(reader) # Saltar la fila de encabezado
-    for fila in reader:
-        lineas.append(fila)
+lineas = get_data("clientes")
 
 # quitamos las tuplas repetidas
 data_no_repetidos = []

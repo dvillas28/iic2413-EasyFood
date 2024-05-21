@@ -1,15 +1,9 @@
 import psycopg2
 import params
-import csv
+from archivos import get_data
 
 # cargar los datos brutos
-lineas = []
-with open('backend/data/cldeldes.csv', 'r', encoding='mac_roman') as file:
-    reader = csv.reader(file, delimiter=';')
-    encabezado = next(reader)  # Saltar la fila de encabezado
-    for fila in reader:
-        lineas.append(fila)
-
+lineas = get_data("cldeldes")
 
 # quitamos los datos repetidos
 data_no_repetidos = []
@@ -31,7 +25,7 @@ for dato in data_no_repetidos:
     try:
         cur.execute(
             insert_query, dato)
-        conn.commit()
+        # conn.commit()
         subidos += 1
 
     except psycopg2.Error as e:

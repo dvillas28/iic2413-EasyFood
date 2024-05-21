@@ -1,15 +1,9 @@
 import psycopg2 as psy2
 import params as p
-import csv
+from archivos import get_data
 
 # cargar los datos brutos
-lineas = []
-with open('backend/data/platos.csv', mode='r', encoding='utf-8') as file:
-    reader = csv.reader(file, delimiter=';')
-    encabezado = next(reader) # Saltar la fila de encabezado
-    for fila in reader:
-        lineas.append(fila)
-
+lineas = get_data("platos")
 
 restriccion = dict()
 nombre=[]
@@ -42,7 +36,7 @@ for tupla in data_no_repetidos:
     try:
         cur.execute(
             insert_query, tupla)
-        conn.commit()
+        # conn.commit()
         subidos += 1
 
     except psy2.Error as e:
