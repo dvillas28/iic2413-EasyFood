@@ -1,7 +1,9 @@
 import chardet
+import os
 
 # Detect encoding
-with open('data/restaurantes.csv', 'rb') as f:
+ruta_relativa = os.path.join('backend','data','suscripciones.csv')
+with open(ruta_relativa, 'rb') as f:
     raw_data = f.read()
 
 result = chardet.detect(raw_data)

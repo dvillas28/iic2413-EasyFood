@@ -4,7 +4,7 @@ import csv
 
 # cargar los datos brutos
 lineas = []
-with open('backend/data/platos.csv', mode='r', encoding='mac_roman') as file:
+with open('backend/data/platos.csv', mode='r', encoding='utf-8') as file:
     reader = csv.reader(file, delimiter=';')
     encabezado = next(reader) # Saltar la fila de encabezado
     for fila in reader:
