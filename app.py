@@ -80,7 +80,7 @@ def result():
     """
     La funcion para mostrar el resultado de la consulta
     """
-    # obtener el tipo de la consulta 0: inestruc, 1: estruc
+    # obtener el tipo de la consulta 0.%: inestruc, 1: estruc
     query_type = int(request.args.get('query_type'))
 
     # empaquetamiento de datos consulta inestructurada
@@ -110,34 +110,20 @@ def result():
         query_dict = {"query_type": query_type,
                       'data': data}
 
-    # enviar query_dict al backend
-    print(f'FRONTEND DATA TO SEND: {query_dict}')
-
     # recibir lo que sea del backend
-    result = q.get_query_result(query_dict)
-
-    # formato para mostrar los datos en tabla TODO: quitar esto
-    example_data = {
-        'labels': ['Name', 'Age', 'Country', 'Height'],
-        'rows': [
-            ['Daniel', 21, 'Chile', 125],
-            ['Gonzalo', 22, 'Chile', 143],
-            ['Nico', 23, 'Chile', 134],
-            ['Amogus', 24, 'Chile', 134],
-        ]
-    }
+    result_dict = q.get_query_result(query_dict)
 
     # if error 0, irnos a la pestalla de error y enviar esos datos
-    if result['result'] == 0:
+    if result_dict['result'] == 0:
         # TODO: retornar error
         return redirect(url_for('error',
                                 error_type='QueryError',
-                                message='Error en la consulta'))
-
+                                message=result['error']))
     else:
         # y entregarselo al template para mostrar la tabla
-        # TODO: quitar estos dos argumentos
-        return render_template('result.html', result=example_data, query_dict=query_dict)
+        return render_template('result.html',
+                               result=result_dict,
+                               query_dict=query_dict)
 
 
 @app.route('/error')

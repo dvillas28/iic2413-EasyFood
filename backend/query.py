@@ -12,29 +12,34 @@ def get_query_result(query_dict: dict) -> dict:
         'rows': (...)
     }
     """
-    queries: dict = q.queries
-    print(queries)
-    query_type = query_dict['query_type']
-    args = query_dict['data']
 
-    query = queries[query_type].replace("'", '"')
-    print([query])
+    queries: dict = q.queries  # diccionario con boilerplate de las consultas
+
+    query_type = query_dict['query_type']  # llave de la consulta
+    args = query_dict['data']  # argumentos
+    sql = queries[query_type]  # boilerplate sql de la consulta
+
+    # TODO: tratar las inyecciones en las consultas inestructuradas
+    if query_type == 0.0:
+        query = f"{sql['SELECT']} {args[0]} {sql['FROM']} {args[1]};"
+
+    elif query_type == 0.1:
+        query = f"{sql['SELECT']} {args[0]} {sql['FROM']} {args[1]} {sql['WHERE']} {args[2]};"
+
+    else:
+        # consulta estructurada
+        pass
 
     conn = psy2.connect(**p.conn_params)
     cur = conn.cursor()
 
     try:
-        print(f'QUERY_SELECTED: {query}')
-        print(query, args)
-        print(f'ARGS: {args}')
-
-        cur.execute(
-            query, args)
+        cur.execute(query)
 
         labels = (desc[0] for desc in cur.description)
         rows = cur.fetchall()
 
-        # conn.commit()
+        conn.commit()
 
         result = {
             'result': 1,

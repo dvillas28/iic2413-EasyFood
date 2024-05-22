@@ -1,7 +1,7 @@
 # TODO: completar con todas las otras consultas
 queries = {
-    0.0: "SELECT %s FROM %s;",
-    0.1: "SELECT %s FROM %s WHERE %s;",
+    0.0: {'SELECT': 'SELECT', 'FROM': 'FROM'},
+    0.1: {'SELECT': 'SELECT', 'FROM': 'FROM', 'WHERE': 'WHERE'},
     1: '',
     2: '',
     3: '',
