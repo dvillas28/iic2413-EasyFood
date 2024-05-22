@@ -13,17 +13,19 @@ def get_query_result(query_dict: dict) -> dict:
     }
     """
     queries: dict = q.queries
-
+    print(queries)
     query_type = query_dict['query_type']
     args = query_dict['data']
 
-    query = queries[query_type]
+    query = queries[query_type].replace("'", '"')
+    print([query])
 
     conn = psy2.connect(**p.conn_params)
     cur = conn.cursor()
 
     try:
         print(f'QUERY_SELECTED: {query}')
+        print(query, args)
         print(f'ARGS: {args}')
 
         cur.execute(
