@@ -22,20 +22,40 @@ insert_query = """
 
 subidos = 0
 no_subidos = 0
-for tupla in data_no_repetidos:
-    try:
-        cur.execute(
-            insert_query, tupla)
-        # conn.commit()
-        subidos += 1
+tuplas_malas = []
 
+for dato in data_no_repetidos:
+    try:
+        cur.execute(insert_query, dato)
+        subidos += 1
+        conn.commit()
     except psy2.Error as e:
         conn.rollback()
-        print(tupla)
+        print(dato)
         print(e)
-        no_subidos += 1
+        tuplas_malas.append(dato)
 
-print(
-    f'Se subieron {subidos} registros y no se subieron {no_subidos} registros: {no_subidos / subidos * 100:.2f}%')
+if tuplas_malas:
+    try:
+        cur.execute("ALTER TABLE restaurant ALTER COLUMN email TYPE VARCHAR(40);")
+        conn.commit()
+    except psy2.Error as e:
+        conn.rollback()
+        print("Error al modificar la tabla:", e)
+
+    for dato in tuplas_malas:
+        try:
+            cur.execute(insert_query, dato)
+            subidos += 1
+        except psy2.Error as e:
+            conn.rollback()
+            print("Error al reintentar insertar la tupla:", dato)
+            print(e)
+            no_subidos += 1
+
+conn.commit()
 cur.close()
 conn.close()
+
+print(f"Total subidos: {subidos}")
+print(f"Total no subidos: {no_subidos}")
