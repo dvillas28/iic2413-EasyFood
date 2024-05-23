@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from backend import query as q
 
 app = Flask(__name__)
 
@@ -16,9 +17,7 @@ def consultas_estruct():
     """
     Funcion para mostrar el menu inicial desplegable de las consultas estructuradas
     """
-    # TODO: solicitar los datos para colocar en los cuadros desplegables
-    data = ['daniel', 'gonzalo', 'nico', 'amogus']  # ejemplo
-    return render_template('menu_consultas.html', data=data)
+    return render_template('menu_consultas.html')
 
 
 @app.route('/consulta_inestruct')
@@ -79,7 +78,7 @@ def result():
     """
     La funcion para mostrar el resultado de la consulta
     """
-    # obtener el tipo de la consulta 0: inestruc, 1: estruc
+    # obtener el tipo de la consulta 0.%: inestruc, 1: estruc
     query_type = int(request.args.get('query_type'))
 
     # empaquetamiento de datos consulta inestructurada
@@ -89,10 +88,12 @@ def result():
         text3 = request.args.get('text3')
         data = [text1, text2, text3]
 
-        query_dict = {"query_type": 0,
-                      'SELECT': data[0],
-                      'FROM': data[1],
-                      'WHERE': data[2]}
+        if text3:
+            query_dict = {"query_type": 0.1,
+                          'data': (data[0], data[1], data[2])}
+        else:
+            query_dict = {"query_type": 0.0,
+                          'data': (data[0], data[1])}
 
     # empaquetamiento de datos consulta estructurada
     elif query_type != 0:
@@ -107,27 +108,19 @@ def result():
         query_dict = {"query_type": query_type,
                       'data': data}
 
-    # enviar query_dict al backend
-    print(f'TO SEND: {query_dict}')
-
     # recibir lo que sea del backend
-
-    # formato para mostrar los datos en tabla
-    example_data = {
-        'labels': ['Name', 'Age', 'Country', 'Height'],
-        'rows': [
-            ['Daniel', 21, 'Chile', 125],
-            ['Gonzalo', 22, 'Chile', 143],
-            ['Nico', 23, 'Chile', 134],
-            ['Amogus', 24, 'Chile', 134],
-        ]
-    }
-
-    # y entregarselo al template para mostrar la tabla
+    result_dict = q.get_query_result(query_dict)
 
     # if error 0, irnos a la pestalla de error y enviar esos datos
-
-    return render_template('result.html', result=example_data, query_dict=query_dict)
+    if result_dict['result'] == 0:
+        # TODO: retornar error
+        return redirect(url_for('error',
+                                error_type=result_dict['error_type'],
+                                message=result_dict['error']))
+    else:
+        # y entregarselo al template para mostrar la tabla
+        return render_template('result.html',
+                               result=result_dict)
 
 
 @app.route('/error')
