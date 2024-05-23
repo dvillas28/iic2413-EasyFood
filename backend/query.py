@@ -1,5 +1,5 @@
 import backend.params as p
-import backend.queries as q
+import backend.queries_dict as q
 import psycopg2 as psy2
 
 
@@ -15,26 +15,29 @@ def get_query_result(query_dict: dict) -> dict:
 
     queries: dict = q.queries  # diccionario con boilerplate de las consultas
 
+    # extraccion de los datos recibidos como argumento
     query_type = query_dict['query_type']  # llave de la consulta
     args = query_dict['data']  # argumentos
+
     sql = queries[query_type]  # boilerplate sql de la consulta
 
-    # TODO: tratar las inyecciones en las consultas inestructuradas
+    # FIXME: tratar las inyecciones en las consultas inestructuradas
     if query_type == 0.0:
         query = f"{sql['SELECT']} {args[0]} {sql['FROM']} {args[1]};"
 
     elif query_type == 0.1:
         query = f"{sql['SELECT']} {args[0]} {sql['FROM']} {args[1]} {sql['WHERE']} {args[2]};"
 
-    else:
-        # consulta estructurada
-        pass
-
     conn = psy2.connect(**p.conn_params)
     cur = conn.cursor()
 
     try:
-        cur.execute(query)
+
+        if type(query_type) == float:  # inestructurada, la consulta ya esta creada
+            cur.execute(query)
+
+        else:
+            cur.execute(sql, args)  # estructurada, agregamos los argumentos
 
         labels = (desc[0] for desc in cur.description)
         rows = cur.fetchall()
@@ -53,8 +56,8 @@ def get_query_result(query_dict: dict) -> dict:
 
         result = {
             'result': 0,
-            'labels': [],
-            'rows': []
+            'error_type': 'SyntaxError',
+            'error': 'Error de sintaxis en la consulta. Revisar los campos ingresados.'
         }
 
     cur.close()

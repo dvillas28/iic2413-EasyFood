@@ -37,7 +37,7 @@
 
             <!-- Query 4 -->
             <li>
-                Mostrar todos los platos de tipo <input type="text" name="text4" placeholder="Desplegable"> con los
+                Mostrar todos los platos de tipo <input type="text" name="text4" placeholder="tipo"> con los
                 restaurantes que lo ofrecen y
                 sus
                 opciones de delivery.
@@ -46,7 +46,7 @@
 
             <!-- Query 5 -->
             <li>
-                Mostrar todos los platos de estilo <input type="text" name="text5" placeholder="Desplegable"> con sus
+                Mostrar todos los platos de estilo <input type="text" name="text5" placeholder="estilo"> con sus
                 restricciones.
                 <button type="submit" name="button" value="5">consultar</button>
             </li>
@@ -54,7 +54,7 @@
             <!-- Query 6 -->
             <li>
                 Mostrar todos los restaurantes que el usuaria de email <input type="text" name="text6"
-                    placeholder="email@gmail.com"> tiene
+                    placeholder="email@email.com"> tiene
                 disponible con sus suscripciones actuales.
                 <button type="submit" name="button" value="6">consultar</button>
             </li>
@@ -91,13 +91,6 @@
             </li>
 
         </ol>
-
-        <label for="dog-names">Choose a dog name:</label>
-        <select name="dog-names" id="dog-names">
-            {% for name in data %}
-            <option>{{ name }}</option>
-            {% endfor %}
-        </select>
 
 </body>
 
