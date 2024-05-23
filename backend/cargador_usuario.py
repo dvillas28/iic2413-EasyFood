@@ -28,7 +28,7 @@ for dato in data_no_repetidos:
     try:
         cur.execute(insert_query, dato)
         subidos += 1
-        conn.commit()
+        #conn.commit()
     except psy2.Error as e:
         conn.rollback()
         print(dato)
@@ -37,8 +37,8 @@ for dato in data_no_repetidos:
 
 if tuplas_malas:
     try:
-        cur.execute("ALTER TABLE restaurant ALTER COLUMN email TYPE VARCHAR(40);")
-        conn.commit()
+        cur.execute("ALTER TABLE usuario ALTER COLUMN email TYPE VARCHAR(40);")
+        #conn.commit()
     except psy2.Error as e:
         conn.rollback()
         print("Error al modificar la tabla:", e)
@@ -53,7 +53,7 @@ if tuplas_malas:
             print(e)
             no_subidos += 1
 
-conn.commit()
+#conn.commit()
 cur.close()
 conn.close()
 
