@@ -11,5 +11,6 @@ queries = {
     7: '',
     8: '',
     9: '',
-    10: '',
+    # %s es de la forma f'%{alergeno}%'. Las wildcards % deben ir como parametro
+    10: "SELECT nombre FROM plato WHERE ingredientes LIKE %s:",
 }
