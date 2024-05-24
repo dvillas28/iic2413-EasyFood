@@ -4,45 +4,55 @@ from archivos import get_data
 from datetime import datetime
 
 
-lineas2 = get_data("cldeldes")
 lineas1 = get_data("suscripciones")
+lineas2 = get_data("cldeldes")
+
 
 def convertir_fecha(fecha_str):
     return datetime.strptime(fecha_str, '%d-%m-%y').strftime('%Y-%m-%d')
 
+
 # quitamos las tuplas repetidas
 data_no_repetidos = []
-for fila in lineas1:
-    for i in lineas2: 
-        if i[1] == fila[0]: 
-            dato = (fila[0], i[6], fila[4], convertir_fecha(fila[4]), fila[5], fila[2])
+for s in lineas1:
+    for c in lineas2:
+        if c[1] == s[0]:
+            dato = [c[6],  # delivery_telefono
+                    s[0],  # usuario_email
+                    s[3],  # pago
+                    convertir_fecha(s[4]),  # fecha
+                    s[5],  # ciclo
+                    s[2]]  # estado
             if dato not in data_no_repetidos:
                 data_no_repetidos.append(dato)
 
-print(data_no_repetidos)
-# conn = psy2.connect(**p.conn_params)
-# cur = conn.cursor()
+print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
-# insert_query = """
-#     INSERT INTO suscrito (email, telefono, pago, fecha, ciclo, estado) VALUES (%s, %s, %s, %s, %s, %s);
-# """
+conn = psy2.connect(**p.conn_params)
+cur = conn.cursor()
 
-# subidos = 0
-# no_subidos = 0
-# for dato in data_no_repetidos:
-#     try:
-#         cur.execute(
-#             insert_query, dato)
-#         # conn.commit()
-#         subidos += 1
+insert_query = """
+    INSERT INTO suscrito (delivery_telefono, usuario_email, pago, fecha, ciclo, estado) VALUES (%s, %s, %s, %s, %s, %s);
+"""
 
-#     except psy2.Error as e:
-#         conn.rollback()
-#         print(dato)
-#         print(e)
-#         no_subidos += 1
+subidos = 0
+no_subidos = 0
+for dato in data_no_repetidos:
+    try:
+        cur.execute(
+            insert_query, dato)
+        # conn.commit()
+        subidos += 1
+        # print(F'SUCESS {dato}')
 
-# print(
-#     f'Se subieron {subidos} registros y no se subieron {no_subidos} registros: {no_subidos / subidos * 100:.2f}%')
-# cur.close()
-# conn.close()
+    except psy2.Error as e:
+        conn.rollback()
+        print(dato)
+        print(e)
+        no_subidos += 1
+
+print(
+    f'Se subieron {subidos} registros y no se subieron {no_subidos} registros: {no_subidos / subidos * 100:.2f}%')
+
+cur.close()
+conn.close()

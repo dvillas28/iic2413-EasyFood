@@ -4,14 +4,14 @@ from archivos import get_data
 
 # cargar los datos brutos
 lineas1 = get_data("pedidos")
-lineas2 = get_data("plato")
+lineas2 = get_data("platos")
 
 # quitamos las tuplas repetidas
 data_no_repetidos = []
 for fila in lineas1:
-    for i in lineas2: 
-        if i[0] == fila[0]: 
-            dato = ()
+    for i in lineas2:
+        if i[0] == fila[0]:
+            dato = (...)
             if dato not in data_no_repetidos:
                 data_no_repetidos.append(dato)
 
@@ -19,7 +19,7 @@ conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO pedido (delivery_telefono, restaurant_nombre) VALUES (%s, %s);
+    INSERT INTO distribuye_a (delivery_telefono, restaurant_nombre) VALUES (%s, %s);
 """
 
 subidos = 0

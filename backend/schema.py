@@ -111,7 +111,7 @@ table_scheme = [
 	fecha DATE,
 	ciclo VARCHAR(30) NOT NULL,
 	estado VARCHAR(30),
-	CHECK (ciclo IN ('menual', 'anual')),
+	CHECK (ciclo IN ('mensual', 'anual')),
 	CHECK (estado IN ('vigente', 'cancelada')),
 	FOREIGN KEY (delivery_telefono) REFERENCES Delivery(telefono),
 	FOREIGN KEY (usuario_email) REFERENCES Usuario(email));
