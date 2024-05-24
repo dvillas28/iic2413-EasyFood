@@ -1,5 +1,5 @@
-import psycopg2
-import params
+import psycopg2 as psy2
+import params as p
 from archivos import get_data
 
 # cargar los datos brutos
@@ -12,7 +12,7 @@ for fila in lineas:
     if dato not in data_no_repetidos:
         data_no_repetidos.append(dato)
 
-conn = psycopg2.connect(**params.conn_params)
+conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
@@ -21,19 +21,23 @@ insert_query = """
 """
 subidos = 0
 no_subidos = 0
+tuplas_malas = []
+
 for dato in data_no_repetidos:
     try:
-        cur.execute(
-            insert_query, dato)
-        # conn.commit()
+        cur.execute(insert_query, dato)
         subidos += 1
-
-    except psycopg2.Error as e:
-        conn.rollback()
-        print(dato)
+        conn.commit()
+    except psy2.Error as e:
         print(e)
-        no_subidos += 1
+        conn.rollback()
+        tuplas_malas.append(dato)
+        no_subidos += 1 
 
-print(f'Se subieron {subidos} registros y no se subieron {no_subidos} registros: {no_subidos / subidos * 100:.2f}%')
+
+conn.commit()
 cur.close()
 conn.close()
+
+print(f"Total subidos: {subidos}")
+print(f"Total no subidos: {no_subidos}")
