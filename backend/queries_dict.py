@@ -13,3 +13,11 @@ queries = {
     9: 'SELECT * FROM evalua JOIN pedido ON plato.id = menu.plato_id WHERE eval_despachador >= valor_ingresado_por_usuario OR eval_cliente >= %s;',
     10: "SELECT nombre FROM plato WHERE ingredientes LIKE %s:",
 }
+
+harmful_sql_keywords = (
+    ';DROP', ';DELETE', ';UPDATE', ';INSERT INTO', ';ALTER TABLE',
+    ';CREATE TABLE', ';CREATE DATABASE', ';TRUNCATE', ';REPLACE',
+    ';GRANT', ';REVOKE', ';COMMIT', ';ROLLBACK', ';SAVEPOINT',
+    ';LOCK TABLE', ';UNLOCK TABLES', ';SET TRANSACTION',
+    ';SHOW DATABASES', ';SHOW TABLES', ';--', ';#'
+)

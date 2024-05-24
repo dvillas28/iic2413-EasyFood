@@ -21,12 +21,21 @@ def get_query_result(query_dict: dict) -> dict:
 
     sql = queries[query_type]  # boilerplate sql de la consulta
 
-    # FIXME: tratar las inyecciones en las consultas inestructuradas
-    if query_type == 0.0:
-        query = f"{sql['SELECT']} {args[0]} {sql['FROM']} {args[1]};"
+    # tratamiento contra inyecciones para consultas inestructuradas
+    if not any(map(lambda kword: kword in ''.join(args) or kword.lower() in ''.join(args), q.harmful_sql_keywords)):
 
-    elif query_type == 0.1:
-        query = f"{sql['SELECT']} {args[0]} {sql['FROM']} {args[1]} {sql['WHERE']} {args[2]};"
+        if query_type == 0.0:
+            query = f"{sql['SELECT']} {args[0]} {sql['FROM']} {args[1]};"
+
+        elif query_type == 0.1:
+            query = f"{sql['SELECT']} {args[0]} {sql['FROM']} {args[1]} {sql['WHERE']} {args[2]};"
+
+    else:
+        return {
+            'result': 0,
+            'error_type': 'SQLInjection',
+            'error': 'Se ha detectado un intento de inyección SQL en la consulta.'
+        }
 
     conn = psy2.connect(**p.conn_params)
     cur = conn.cursor()
