@@ -15,7 +15,7 @@ data_no_repetidos = []
 for fila in lineas1:
     for i in lineas2: 
         if i[0] == fila[0]: 
-            dato = (fila[0], i[1], fila[7], fila[6], convertir_fecha(fila[5]))
+            dato = (fila[0], i[1], fila[7].strip(" ").lower(), fila[6], convertir_fecha(fila[5]))
             if dato not in data_no_repetidos:
                 data_no_repetidos.append(dato)
 
