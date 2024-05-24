@@ -3,21 +3,20 @@ import params as p
 from archivos import get_data
 
 # cargar los datos brutos
-lineas = get_data("platos")
+lineas = get_data("clientes")
 
 # quitamos las tuplas repetidas
 data_no_repetidos = []
 for fila in lineas:
-    tupla = (fila[0], fila[4], fila[1], fila[5], fila[6])
+    tupla = (fila[4].split(',')[1], fila[4].split(',')[0])
     if tupla not in data_no_repetidos:
         data_no_repetidos.append(tupla)
-
 
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO plato (id, estilo, nombre, restriccion, ingredientes) VALUES (%s, %s, %s, %s, %s);
+    INSERT INTO direccion (comuna, calle) VALUES (%s, %s);
 """
 
 subidos = 0
@@ -30,14 +29,14 @@ for dato in data_no_repetidos:
         subidos += 1
         conn.commit()
     except psy2.Error as e:
-        print(e)
+        print(f"calle: {dato[1]} se sobrepasa del limite de 30 caracteres")
         conn.rollback()
         tuplas_malas.append(dato)
 
 if tuplas_malas:
     try:
-        cur.execute("ALTER TABLE plato ALTER COLUMN restriccion TYPE VARCHAR(30);")
-        print("Tabla plato: restriccion INT to restriccion VARCHAR(30)")
+        cur.execute("ALTER TABLE direccion ALTER COLUMN calle TYPE VARCHAR(60);")
+        print("Tabla direccion: calle VARCHAR(30) to calle VARCHAR(60)")
         conn.commit()
     except psy2.Error as e:
         conn.rollback()
@@ -49,28 +48,9 @@ if tuplas_malas:
             subidos += 1
         except psy2.Error as e:
             conn.rollback()
-            no_subidos += 1
+            print("Error al reintentar insertar la tupla:", dato)
             print(e)
-    
-    if tuplas_malas:
-        try:
-            cur.execute("ALTER TABLE plato ALTER COLUMN ingredientes TYPE TEXT;")
-            print("Tabla plato: ingredientes VARCHAR(30) to ingredietes TEXT")
-            conn.commit()
-        except psy2.Error as e:
-            conn.rollback()
-            print("Error al modificar la tabla:", e)
-
-        for dato in tuplas_malas:
-            try:
-                cur.execute(insert_query, dato)
-                subidos += 1
-            except psy2.Error as e:
-                conn.rollback()
-                print("Error al reintentar insertar la tupla:", dato)
-                print(e)
-                no_subidos += 1
-
+            no_subidos += 1
 
 conn.commit()
 cur.close()

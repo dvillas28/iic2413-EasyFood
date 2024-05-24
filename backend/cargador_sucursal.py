@@ -21,20 +21,41 @@ insert_query = """
 
 subidos = 0
 no_subidos = 0
+tuplas_malas = []
+
 for dato in data_no_repetidos:
     try:
-        cur.execute(
-            insert_query, dato)
-        # conn.commit()
+        cur.execute(insert_query, dato)
         subidos += 1
+        conn.commit()
+    except psy2.Error as e:
+        print(f"telefono: {dato[1]} se sobrepasa del limite de 11 caracteres")
+        print(e)
+        conn.rollback()
+        tuplas_malas.append(dato)
 
+if tuplas_malas:
+    try:
+        cur.execute("ALTER TABLE sucursal ALTER COLUMN telefono TYPE CHAR(20);")
+        print("Tabla despachador: telefono CHAR(11) to telefono CHAR(20)")
+        conn.commit()
     except psy2.Error as e:
         conn.rollback()
-        print(dato)
-        print(e)
-        no_subidos += 1
+        print("Error al modificar la tabla:", e)
 
-print(
-    f'Se subieron {subidos} registros y no se subieron {no_subidos} registros: {no_subidos / subidos * 100:.2f}%')
+    for dato in tuplas_malas:
+        try:
+            cur.execute(insert_query, dato)
+            subidos += 1
+        except psy2.Error as e:
+            conn.rollback()
+            print("Error al reintentar insertar la tupla:", dato)
+            print(e)
+            no_subidos += 1
+
+conn.commit()
 cur.close()
 conn.close()
+
+print(f"Total subidos: {subidos}")
+print(f"Total no subidos: {no_subidos}")
