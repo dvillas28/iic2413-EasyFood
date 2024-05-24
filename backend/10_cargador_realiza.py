@@ -26,7 +26,7 @@ for dato in data_no_repetidos:
     try:
         cur.execute(
             insert_query, dato)
-        # conn.commit()
+        conn.commit()
         subidos += 1
 
     except psy2.Error as e:

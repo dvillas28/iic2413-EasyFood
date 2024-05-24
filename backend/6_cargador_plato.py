@@ -12,6 +12,7 @@ for fila in lineas:
     if tupla not in data_no_repetidos:
         data_no_repetidos.append(tupla)
 
+print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
@@ -28,7 +29,7 @@ for dato in data_no_repetidos:
     try:
         cur.execute(insert_query, dato)
         subidos += 1
-        conn.commit()
+        # conn.commit()
     except psy2.Error as e:
         print(e)
         conn.rollback()
@@ -36,9 +37,10 @@ for dato in data_no_repetidos:
 
 if tuplas_malas:
     try:
-        cur.execute("ALTER TABLE plato ALTER COLUMN restriccion TYPE VARCHAR(30);")
+        cur.execute(
+            "ALTER TABLE plato ALTER COLUMN restriccion TYPE VARCHAR(30);")
         print("Tabla plato: restriccion INT to restriccion VARCHAR(30)")
-        conn.commit()
+        # conn.commit()
     except psy2.Error as e:
         conn.rollback()
         print("Error al modificar la tabla:", e)
@@ -51,12 +53,13 @@ if tuplas_malas:
             conn.rollback()
             no_subidos += 1
             print(e)
-    
+
     if tuplas_malas:
         try:
-            cur.execute("ALTER TABLE plato ALTER COLUMN ingredientes TYPE TEXT;")
+            cur.execute(
+                "ALTER TABLE plato ALTER COLUMN ingredientes TYPE TEXT;")
             print("Tabla plato: ingredientes VARCHAR(30) to ingredietes TEXT")
-            conn.commit()
+            # conn.commit()
         except psy2.Error as e:
             conn.rollback()
             print("Error al modificar la tabla:", e)
@@ -72,7 +75,7 @@ if tuplas_malas:
                 no_subidos += 1
 
 
-conn.commit()
+# conn.commit()
 cur.close()
 conn.close()
 

@@ -12,6 +12,9 @@ for fila in lineas:
     if dato not in data_no_repetidos:
         data_no_repetidos.append(dato)
 
+
+print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
+
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
@@ -32,8 +35,10 @@ for dato in data_no_repetidos:
         print(e)
         conn.rollback()
         tuplas_malas.append(dato)
-        no_subidos += 1 
+        no_subidos += 1
 
+if not tuplas_malas:
+    print(f'No hubo tuplas mal subidas')
 
 conn.commit()
 cur.close()

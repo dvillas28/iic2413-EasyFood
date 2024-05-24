@@ -3,25 +3,27 @@ import params as p
 from archivos import get_data
 
 # cargar los datos brutos
-lineas = get_data("clientes")
+lineas = get_data("cldeldes")
 
 # quitamos las tuplas repetidas
 data_no_repetidos = []
 for fila in lineas:
-    tupla = (fila[4].split(',')[1], fila[4].split(',')[0])
-    if tupla not in data_no_repetidos:
-        data_no_repetidos.append(tupla)
+    dato = (fila[12], fila[11])
+    if dato not in data_no_repetidos:
+        data_no_repetidos.append(dato)
 
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO direccion (comuna, calle) VALUES (%s, %s);
+    INSERT INTO despachador (telefono, nombre) VALUES (%s, %s);
 """
 
 subidos = 0
 no_subidos = 0
 tuplas_malas = []
+
+print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
 for dato in data_no_repetidos:
     try:
@@ -29,14 +31,21 @@ for dato in data_no_repetidos:
         subidos += 1
         conn.commit()
     except psy2.Error as e:
-        print(f"calle: {dato[1]} se sobrepasa del limite de 30 caracteres")
+        print(f"telefono: {dato[1]} se sobrepasa del limite de 11 caracteres")
+        print(e)
         conn.rollback()
         tuplas_malas.append(dato)
 
+print(f'\nSubidas correctamente: {subidos} tuplas')
+
 if tuplas_malas:
+
+    print(f'No subidas: {len(tuplas_malas)} tuplas')
+
     try:
-        cur.execute("ALTER TABLE direccion ALTER COLUMN calle TYPE VARCHAR(60);")
-        print("Tabla direccion: calle VARCHAR(30) to calle VARCHAR(60)")
+        cur.execute(
+            "ALTER TABLE despachador ALTER COLUMN telefono TYPE VARCHAR(20);")
+        print("\n Cambio restriccion tabla despachador: telefono CHAR(11) to telefono VARCHAR(20)\n")
         conn.commit()
     except psy2.Error as e:
         conn.rollback()
@@ -56,5 +65,5 @@ conn.commit()
 cur.close()
 conn.close()
 
-print(f"Total subidos: {subidos}")
-print(f"Total no subidos: {no_subidos}")
+print(f"Total subidos: {subidos} tuplas")
+print(f"Total no subidos: {no_subidos} tuplas")

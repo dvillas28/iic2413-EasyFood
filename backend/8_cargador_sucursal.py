@@ -3,20 +3,22 @@ import params as p
 from archivos import get_data
 
 # cargar los datos brutos
-lineas = get_data("cldeldes")
+lineas = get_data("restaurantes")
 
 # quitamos las tuplas repetidas
 data_no_repetidos = []
 for fila in lineas:
-    dato = (fila[11], fila[12])
+    dato = (fila[4], fila[6])
     if dato not in data_no_repetidos:
         data_no_repetidos.append(dato)
+
+print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO despachador (telefono, nombre) VALUES (%s, %s);
+    INSERT INTO sucursal (nombre, telefono) VALUES (%s, %s);
 """
 
 subidos = 0
@@ -34,11 +36,15 @@ for dato in data_no_repetidos:
         conn.rollback()
         tuplas_malas.append(dato)
 
+a = 0
+
 if tuplas_malas:
     try:
-        cur.execute("ALTER TABLE despachador ALTER COLUMN telefono TYPE CHAR(20);")
-        print("Tabla despachador: telefono CHAR(11) to telefono CHAR(20)")
+        cur.execute(
+            "ALTER TABLE sucursal ALTER COLUMN telefono TYPE VARCHAR(20);")
+        print("\nCambio restriccion tabla sucursal: telefono CHAR(11) to telefono VARCHAR(20)\n")
         conn.commit()
+        a += 1
     except psy2.Error as e:
         conn.rollback()
         print("Error al modificar la tabla:", e)
@@ -57,5 +63,6 @@ conn.commit()
 cur.close()
 conn.close()
 
+print(f"Tuplas malas corregidas: {a}")
 print(f"Total subidos: {subidos}")
 print(f"Total no subidos: {no_subidos}")

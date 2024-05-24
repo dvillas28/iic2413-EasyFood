@@ -12,6 +12,7 @@ for fila in lineas:
     if dato not in data_no_repetidos:
         data_no_repetidos.append(dato)
 
+print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
@@ -26,7 +27,7 @@ for dato in data_no_repetidos:
     try:
         cur.execute(
             insert_query, dato)
-        # conn.commit()
+        conn.commit()
         subidos += 1
 
     except psy2.Error as e:
@@ -35,7 +36,7 @@ for dato in data_no_repetidos:
         print(e)
         no_subidos += 1
 
-print(
-    f'Se subieron {subidos} registros y no se subieron {no_subidos} registros: {no_subidos / subidos * 100:.2f}%')
+print(f"Total subidos: {subidos} tuplas")
+print(f"Total no subidos: {no_subidos} tuplas")
 cur.close()
 conn.close()

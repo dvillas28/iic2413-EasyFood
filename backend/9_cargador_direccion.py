@@ -3,20 +3,22 @@ import params as p
 from archivos import get_data
 
 # cargar los datos brutos
-lineas = get_data("restaurantes")
+lineas = get_data("clientes")
 
 # quitamos las tuplas repetidas
 data_no_repetidos = []
 for fila in lineas:
-    dato = (fila[4], fila[6])
-    if dato not in data_no_repetidos:
-        data_no_repetidos.append(dato)
+    tupla = (fila[4].split(',')[1], fila[4].split(',')[0])
+    if tupla not in data_no_repetidos:
+        data_no_repetidos.append(tupla)
+
+print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO sucursal (nombre, telefono) VALUES (%s, %s);
+    INSERT INTO direccion (comuna, calle) VALUES (%s, %s);
 """
 
 subidos = 0
@@ -29,16 +31,17 @@ for dato in data_no_repetidos:
         subidos += 1
         conn.commit()
     except psy2.Error as e:
-        print(f"telefono: {dato[1]} se sobrepasa del limite de 11 caracteres")
-        print(e)
+        print(f"calle: {dato[1]} se sobrepasa del limite de 30 caracteres")
         conn.rollback()
         tuplas_malas.append(dato)
-
+a = 0
 if tuplas_malas:
     try:
-        cur.execute("ALTER TABLE sucursal ALTER COLUMN telefono TYPE CHAR(20);")
-        print("Tabla despachador: telefono CHAR(11) to telefono CHAR(20)")
+        cur.execute(
+            "ALTER TABLE direccion ALTER COLUMN calle TYPE VARCHAR(60);")
+        print("Tabla direccion: calle VARCHAR(30) to calle VARCHAR(60)")
         conn.commit()
+        a += 1
     except psy2.Error as e:
         conn.rollback()
         print("Error al modificar la tabla:", e)
@@ -57,5 +60,6 @@ conn.commit()
 cur.close()
 conn.close()
 
+print(f'Tuplas malas corregidas: {a}')
 print(f"Total subidos: {subidos}")
 print(f"Total no subidos: {no_subidos}")
