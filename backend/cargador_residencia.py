@@ -5,18 +5,18 @@ from archivos import get_data
 
 def load() -> None:
 
-    print(f'\n ---- Cargando datos de la tabla Realiza ---- \n')
+    print(f'\n ---- Cargando datos de la tabla Residencia ---- \n')
 
     # cargar los datos brutos
-    lineas1 = get_data("calificacion")
-    lineas2 = get_data("cldeldes")
-    lineas2 = get_data("pedidos")
+    lineas = get_data("clientes")
+
     # quitamos las tuplas repetida
 
 
     data_no_repetidos = []
     for fila in lineas:
-        dato = (fila[0], fila[1], fila[1], fila[1])
+        newf4 = fila[4].split(',')
+        dato = (fila[1], newf4[0], newf4[1])
         if dato not in data_no_repetidos:
             data_no_repetidos.append(dato)
 
@@ -24,7 +24,7 @@ def load() -> None:
     cur = conn.cursor()
 
     insert_query = """
-        INSERT INTO realiza (pedido_id, despachador_telefono, delivery_telefono, eval_despachador) VALUES (%s, %s, %s, %s);
+        INSERT INTO residencia (usuario_email, direccion_calle, direccion_comuna) VALUES (%s, %s, %s);
     """
 
     subidos = 0
@@ -51,9 +51,9 @@ def load() -> None:
 
         try:
             cur.execute(
-                "ALTER TABLE realiza ALTER COLUMN usuario_email TYPE VARCHAR(50);")
+                "ALTER TABLE residencia ALTER COLUMN direccion_calle TYPE VARCHAR(50);")
             print(
-                "\n Cambio usuario_email tabla residencia: usuario_email VARCHAR(30) to usuario_email VARCHAR(50)\n")
+                "\n Cambio direccion_calle tabla residencia: direccion_calle VARCHAR(30) to direccion_calle VARCHAR(50)\n")
             conn.commit()
         except psy2.Error as e:
             conn.rollback()
@@ -67,6 +67,27 @@ def load() -> None:
                 conn.rollback()
                 print("Error al reintentar insertar la tupla:", dato)
                 print(e)
+        
+        if tuplas_malas:
+          try:
+              cur.execute(
+                  "ALTER TABLE residencia ALTER COLUMN usuario_email TYPE VARCHAR(50);")
+              print(
+                  "\n Cambio usuario_email tabla residencia: usuario_email VARCHAR(30) to usuario_email VARCHAR(50)\n")
+              conn.commit()
+          except psy2.Error as e:
+              conn.rollback()
+              print("Error al modificar la tabla:", e)
+
+          for dato in tuplas_malas:
+              try:
+                  cur.execute(insert_query, dato)
+                  subidos += 1
+              except psy2.Error as e:
+                  conn.rollback()
+                  print("Error al reintentar insertar la tupla:", dato)
+                  print(e)
+                  no_subidos += 1
 
     conn.commit()
     cur.close()
