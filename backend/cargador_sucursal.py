@@ -5,7 +5,7 @@ from archivos import get_data
 
 def load() -> None:
 
-    print(f'\nCargando datos de la tabla Sucursal\n')
+    print(f'\n ---- Cargando datos de la tabla Sucursal ---- \n')
 
     # cargar los datos brutos
     lineas = get_data("restaurantes")

@@ -167,3 +167,25 @@ table_scheme = [
 	FOREIGN KEY (pedido_id) REFERENCES Pedido(id)); 
   """
 ]
+
+# primero hay que limpiar las tablas que contienen llaves foraneas
+table_names = [
+    'realiza',  # 10.
+    'evalua',  # 11.
+    'residencia',  # 12.
+    'suscrito',  # 13.
+    'trabaja',  # 14.
+    'distribuye_a',  # 15.
+    'localizado_en',  # 16.
+    'de',  # 17.
+    'menu',  # 18.
+    'contiene',  # 19.
+    'usuario',  # 1.
+    'pedido',  # 3.
+    'despachador',  # 4.
+    'delivery',  # 5.
+    'plato',  # 6.
+    'restaurant',  # 7.
+    'sucursal',  # 8.
+    'direccion',  # 9.
+]
