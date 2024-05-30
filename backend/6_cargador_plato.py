@@ -8,7 +8,7 @@ lineas = get_data("platos")
 # quitamos las tuplas repetidas
 data_no_repetidos = []
 for fila in lineas:
-    tupla = (fila[0], fila[4], fila[1], fila[5], fila[6])
+    tupla = (fila[4], fila[1], fila[5], fila[6])
     if tupla not in data_no_repetidos:
         data_no_repetidos.append(tupla)
 
@@ -18,7 +18,7 @@ conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO plato (id, estilo, nombre, restriccion, ingredientes) VALUES (%s, %s, %s, %s, %s);
+    INSERT INTO plato (estilo, nombre, restriccion, ingredientes) VALUES (%s, %s, %s, %s);
 """
 
 subidos = 0
@@ -29,7 +29,7 @@ for dato in data_no_repetidos:
     try:
         cur.execute(insert_query, dato)
         subidos += 1
-        # conn.commit()
+        conn.commit()
     except psy2.Error as e:
         print(e)
         conn.rollback()
@@ -40,7 +40,7 @@ if tuplas_malas:
         cur.execute(
             "ALTER TABLE plato ALTER COLUMN restriccion TYPE VARCHAR(30);")
         print("Tabla plato: restriccion INT to restriccion VARCHAR(30)")
-        # conn.commit()
+        conn.commit()
     except psy2.Error as e:
         conn.rollback()
         print("Error al modificar la tabla:", e)
@@ -59,7 +59,7 @@ if tuplas_malas:
             cur.execute(
                 "ALTER TABLE plato ALTER COLUMN ingredientes TYPE TEXT;")
             print("Tabla plato: ingredientes VARCHAR(30) to ingredietes TEXT")
-            # conn.commit()
+            conn.commit()
         except psy2.Error as e:
             conn.rollback()
             print("Error al modificar la tabla:", e)
@@ -75,7 +75,7 @@ if tuplas_malas:
                 no_subidos += 1
 
 
-# conn.commit()
+conn.commit()
 cur.close()
 conn.close()
 
