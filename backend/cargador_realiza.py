@@ -8,15 +8,14 @@ def load() -> None:
     print(f'\n ---- Cargando datos de la tabla Realiza ---- \n')
 
     # cargar los datos brutos
-    lineas1 = get_data("calificacion")
-    lineas2 = get_data("cldeldes")
-    lineas2 = get_data("pedidos")
+    lineas = get_data("pedidos")
+
     # quitamos las tuplas repetida
 
 
     data_no_repetidos = []
     for fila in lineas:
-        dato = (fila[0], fila[1], fila[1], fila[1])
+        dato = (fila[0], fila[1])
         if dato not in data_no_repetidos:
             data_no_repetidos.append(dato)
 
@@ -24,7 +23,7 @@ def load() -> None:
     cur = conn.cursor()
 
     insert_query = """
-        INSERT INTO realiza (pedido_id, despachador_telefono, delivery_telefono, eval_despachador) VALUES (%s, %s, %s, %s);
+        INSERT INTO realiza (pedido_id, usuario_email) VALUES (%s, %s);
     """
 
     subidos = 0
