@@ -5,6 +5,8 @@ import params as p
 ESTE SCRIPT BORRA TODOS LOS DATOS DE TODAS LAS TABLAS EN EL ESQUEMA PÚBLICO DE LA BASE DE DATOS.
 USAR CON MUCHA PRECAUCION!!
 """
+# FIXME: la opcion de limpiar tabla esta rota
+
 # Conectar a la base de datos
 conn = psycopg2.connect(**p.conn_params)
 
@@ -26,7 +28,7 @@ print('c: CLEAN - Borra todos los datos de todas las tablas')
 response = input("Selecciona la accion a ejecutar (d/c): ")
 
 if response.lower() == 'd':
-    response = input('Se borraran TODAS LAS TABLAS. ¿Estas seguro? (y/n)')
+    response = input('Se borraran TODAS LAS TABLAS. ¿Estas seguro? (y/n): ')
     if response != 'y':
         print('Operación cancelada.')
 
@@ -38,9 +40,9 @@ if response.lower() == 'd':
             cur.execute(truncate_query)
             print(f'Table {table[0]} deleted.')
 
-elif response.lower() == 'clean':
+elif response.lower() == 'c':
     response = input(
-        'Se borraran los datos de todas las tablas. ¿Estas seguro? (y/n)')
+        'Se borraran los datos de todas las tablas. ¿Estas seguro? (y/n): ')
 
     if response != 'y':
         print('Operación cancelada.')

@@ -52,7 +52,7 @@ def get_data(file_name: str) -> list:
     lineas = []
     with open(diccionario_data[file_name]["path"], mode='r', encoding=diccionario_data[file_name]["encoding"]) as file:
         reader = csv.reader(file, delimiter=';')
-        next(reader) # Saltar la fila de encabezado
+        next(reader)  # Saltar la fila de encabezado
         for fila in reader:
             lineas.append(fila)
     return lineas
