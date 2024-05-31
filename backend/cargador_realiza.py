@@ -12,7 +12,6 @@ def load() -> None:
 
     # quitamos las tuplas repetida
 
-
     data_no_repetidos = []
     for fila in lineas:
         dato = (fila[0], fila[1])
@@ -45,31 +44,12 @@ def load() -> None:
     print(f'\nSubidas correctamente: {subidos} tuplas')
 
     if tuplas_malas:
-
         print(f'No subidas: {len(tuplas_malas)} tuplas')
-
-        try:
-            cur.execute(
-                "ALTER TABLE realiza ALTER COLUMN usuario_email TYPE VARCHAR(50);")
-            print(
-                "\n Cambio usuario_email tabla residencia: usuario_email VARCHAR(30) to usuario_email VARCHAR(50)\n")
-            conn.commit()
-        except psy2.Error as e:
-            conn.rollback()
-            print("Error al modificar la tabla:", e)
-
-        for dato in tuplas_malas:
-            try:
-                cur.execute(insert_query, dato)
-                subidos += 1
-            except psy2.Error as e:
-                conn.rollback()
-                print("Error al reintentar insertar la tupla:", dato)
-                print(e)
 
     conn.commit()
     cur.close()
     conn.close()
 
-    print(f"Total subidos: {subidos} tuplas")
-    print(f"Total no subidos: {no_subidos} tuplas")
+
+if __name__ == '__main__':
+    load()
