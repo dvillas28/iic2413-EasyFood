@@ -5,7 +5,7 @@ from archivos import get_data
 
 def load() -> None:
 
-    print(f'\n ---- Cargando datos de la tabla Restaurante ---- \n')
+    print(f'\n ---- Cargando datos de la tabla De ---- \n')
 
     # cargar los datos brutos
     lineas = get_data("restaurantes")
@@ -13,9 +13,9 @@ def load() -> None:
     # quitamos las tuplas repetidas
     data_no_repetidos = []
     for fila in lineas:
-        dato = (fila[0], fila[1], fila[2], fila[3])
-        if dato not in data_no_repetidos:
-            data_no_repetidos.append(dato)
+        tupla = (fila[0], fila[6])
+        if tupla not in data_no_repetidos:
+            data_no_repetidos.append(tupla)
 
     print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
@@ -23,34 +23,34 @@ def load() -> None:
     cur = conn.cursor()
 
     insert_query = """
-        INSERT INTO restaurante (nombre, vigente, estilo, precio_min_reparto_gratis) VALUES (%s, %s, %s, %s);
+        INSERT INTO de (restaurante_nombre, sucursal_telefono) VALUES (%s, %s);
     """
 
     subidos = 0
     no_subidos = 0
     tuplas_malas = []
-    for dato in data_no_repetidos:
+
+    for tupla in data_no_repetidos:
         try:
             cur.execute(
-                insert_query, dato)
+                insert_query, tupla)
             conn.commit()
             subidos += 1
 
         except psy2.Error as e:
             conn.rollback()
-            print(dato)
+            print(tupla)
             print(e)
             no_subidos += 1
-            tuplas_malas.append(dato)
-
-    print(f"Subidas correctamente: {subidos} tuplas")
+    print(f'\nSubidas correctamente: {subidos} tuplas')
 
     if tuplas_malas:
-        print(f'No subidas: {len(tuplas_malas)} tuplas')
+        print(f'No subidas: {no_subidos} tuplas')
 
+    conn.commit()
     cur.close()
     conn.close()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     load()

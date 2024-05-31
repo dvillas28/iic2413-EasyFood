@@ -5,16 +5,25 @@ from archivos import get_data
 
 def load() -> None:
 
-    print(f'\n ---- Cargando datos de la tabla Trabaja ---- \n')
+    print(f'\n ---- Cargando datos de la tabla Pedido ---- \n')
 
     # cargar los datos brutos
-    lineas = get_data("cldeldes")
+    lineas1 = get_data("pedidos")
+    lineas2 = get_data("calificacion")
 
-    # quitamos los datos repetidos
+    # quitamos las tuplas repetidas
     data_no_repetidos = []
-    for fila in lineas:
-        dato = (fila[6], fila[12])
-        if dato not in data_no_repetidos:
+    for fila in lineas1:
+        for i in lineas2:
+            if i[0] == fila[0]:
+                dato = (fila[0], i[1], fila[7].lower().strip(
+                    " "), fila[6], fila[5])
+                if dato not in data_no_repetidos:
+                    data_no_repetidos.append(dato)
+                break
+        else:
+            dato = (fila[0], None, fila[7].lower().strip(
+                " "), fila[6], fila[5])
             data_no_repetidos.append(dato)
 
     print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
@@ -23,11 +32,11 @@ def load() -> None:
     cur = conn.cursor()
 
     insert_query = """
-        INSERT INTO trabaja (delivery_telefono, despachador_telefono)
-        VALUES (%s, %s);
+        INSERT INTO pedido (id, eval_cliente, estado, hora, fecha)
+        VALUES (%s, %s, %s, %s, TO_TIMESTAMP(%s, 'DD-MM-YY'));
     """
+
     subidos = 0
-    no_subidos = 0
     tuplas_malas = []
 
     for dato in data_no_repetidos:
@@ -36,22 +45,18 @@ def load() -> None:
             subidos += 1
             conn.commit()
         except psy2.Error as e:
-            print(e)
+            print(f"Error: {e}")
+            print(f"Failed to insert: {dato}")
             conn.rollback()
             tuplas_malas.append(dato)
-            no_subidos += 1
 
     print(f"\nSubidas correctamente: {subidos} tuplas")
 
     if tuplas_malas:
         print(f'No subidas: {len(tuplas_malas)} tuplas')
 
-    conn.commit()
     cur.close()
     conn.close()
-
-    print(f"Total subidos: {subidos}")
-    print(f"Total no subidos: {no_subidos}")
 
 
 if __name__ == "__main__":

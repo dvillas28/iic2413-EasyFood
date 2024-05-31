@@ -41,12 +41,15 @@ def load() -> None:
             tuplas_malas.append(dato)
             no_subidos += 1
 
-    if not tuplas_malas:
-        print(f'No hubo tuplas mal subidas')
+    print(f"\nSubidas correctamente: {subidos} tuplas")
+
+    if tuplas_malas:
+        print(f'No subidas: {len(tuplas_malas)} tuplas')
 
     conn.commit()
     cur.close()
     conn.close()
 
-    print(f"Total subidos: {subidos}")
-    print(f"Total no subidos: {no_subidos}")
+
+if __name__ == "__main__":
+    load()

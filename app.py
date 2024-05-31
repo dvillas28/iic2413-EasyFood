@@ -113,7 +113,6 @@ def result():
 
     # if error 0, irnos a la pestalla de error y enviar esos datos
     if result_dict['result'] == 0:
-        # TODO: retornar error
         return redirect(url_for('error',
                                 error_type=result_dict['error_type'],
                                 message=result_dict['error']))

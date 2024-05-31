@@ -6,20 +6,12 @@ from schema import table_names
 ESTE SCRIPT BORRA TODOS LOS DATOS DE TODAS LAS TABLAS EN EL ESQUEMA PÚBLICO DE LA BASE DE DATOS.
 USAR CON MUCHA PRECAUCION!!
 """
-# FIXME: la opcion de limpiar tabla esta rota
 
 # Conectar a la base de datos
 conn = psycopg2.connect(**p.conn_params)
 
 # Crear un cursor
 cur = conn.cursor()
-
-# Consulta para obtener todos los nombres de las tablas en el esquema público
-cur.execute("""
-    SELECT tablename
-    FROM pg_tables
-    WHERE schemaname = 'public';
-""")
 
 print('d: DELETE - Borra todas las tablas')
 print('c: CLEAN - Borra todos los datos de todas las tablas')

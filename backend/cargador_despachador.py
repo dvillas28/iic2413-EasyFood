@@ -25,7 +25,6 @@ def load() -> None:
     """
 
     subidos = 0
-    no_subidos = 0
     tuplas_malas = []
 
     print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
@@ -48,29 +47,10 @@ def load() -> None:
 
         print(f'No subidas: {len(tuplas_malas)} tuplas')
 
-        try:
-            cur.execute(
-                "ALTER TABLE despachador ALTER COLUMN telefono TYPE VARCHAR(20);")
-            print(
-                "\n Cambio restriccion tabla despachador: telefono CHAR(11) to telefono VARCHAR(20)\n")
-            conn.commit()
-        except psy2.Error as e:
-            conn.rollback()
-            print("Error al modificar la tabla:", e)
-
-        for dato in tuplas_malas:
-            try:
-                cur.execute(insert_query, dato)
-                subidos += 1
-            except psy2.Error as e:
-                conn.rollback()
-                print("Error al reintentar insertar la tupla:", dato)
-                print(e)
-                no_subidos += 1
-
     conn.commit()
     cur.close()
     conn.close()
 
-    print(f"Total subidos: {subidos} tuplas")
-    print(f"Total no subidos: {no_subidos} tuplas")
+
+if __name__ == '__main__':
+    load()

@@ -10,6 +10,8 @@ def load() -> None:
     # cargar los datos brutos
     lineas = get_data("clientes")
 
+    comunas = get_data("comuna")
+
     # quitamos las tuplas repetidas
     data_no_repetidos = []
     for fila in lineas:
