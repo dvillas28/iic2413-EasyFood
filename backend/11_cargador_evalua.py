@@ -8,23 +8,36 @@ def load() -> None:
     print(f'\n ---- Cargando datos de la tabla Realiza ---- \n')
 
     # cargar los datos brutos
-    lineas1 = get_data("calificacion")
-    lineas2 = get_data("cldeldes")
-    lineas2 = get_data("pedidos")
+    calificacion_csv = get_data("calificacion")
+    cldeldes_csv = get_data("cldeldes")
+    pedidos_csv = get_data("pedidos")
+    
     # quitamos las tuplas repetida
-
-
     data_no_repetidos = []
-    for fila in lineas:
-        dato = (fila[0], fila[1], fila[1], fila[1])
-        if dato not in data_no_repetidos:
-            data_no_repetidos.append(dato)
+    for pedido in pedidos_csv:
+        for despachador in cldeldes_csv:
+            if pedido[3] == despachador[11]:
+                despachador_telefono = despachador[12]
+                break
+        for delivery in cldeldes_csv:
+            if pedido[2] == delivery[4]:
+                delivery_telefono = delivery[6]
+                break
+        for calificacion in calificacion_csv:
+            if pedido[0] == calificacion[0]:
+                eval_despachador = calificacion[2]
+                break
+        else:
+            eval_despachador = None
+        tupla = (pedido[0], despachador_telefono, delivery_telefono, eval_despachador)
+        if tupla not in data_no_repetidos:
+            data_no_repetidos.append(tupla)
 
     conn = psy2.connect(**p.conn_params)
     cur = conn.cursor()
 
     insert_query = """
-        INSERT INTO realiza (pedido_id, despachador_telefono, delivery_telefono, eval_despachador) VALUES (%s, %s, %s, %s);
+        INSERT INTO evalua (pedido_id, despachador_telefono, delivery_telefono, eval_despachador) VALUES (%s, %s, %s, %s);
     """
 
     subidos = 0
@@ -40,34 +53,11 @@ def load() -> None:
             conn.commit()
         except psy2.Error as e:
             print(e)
+            no_subidos+=1
             conn.rollback()
             tuplas_malas.append(dato)
 
     print(f'\nSubidas correctamente: {subidos} tuplas')
-
-    if tuplas_malas:
-
-        print(f'No subidas: {len(tuplas_malas)} tuplas')
-
-        try:
-            cur.execute(
-                "ALTER TABLE realiza ALTER COLUMN usuario_email TYPE VARCHAR(50);")
-            print(
-                "\n Cambio usuario_email tabla residencia: usuario_email VARCHAR(30) to usuario_email VARCHAR(50)\n")
-            conn.commit()
-        except psy2.Error as e:
-            conn.rollback()
-            print("Error al modificar la tabla:", e)
-
-        for dato in tuplas_malas:
-            try:
-                cur.execute(insert_query, dato)
-                subidos += 1
-            except psy2.Error as e:
-                conn.rollback()
-                print("Error al reintentar insertar la tupla:", dato)
-                print(e)
-
     conn.commit()
     cur.close()
     conn.close()
