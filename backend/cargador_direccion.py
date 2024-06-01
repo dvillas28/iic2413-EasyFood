@@ -8,16 +8,29 @@ def load() -> None:
     print(f'\n ---- Cargando datos de la tabla Direccion ---- \n')
 
     # cargar los datos brutos
-    lineas = get_data("clientes")
+    clientes_csv = get_data("clientes")
+    restaurantes_csv = get_data("restaurantes")
 
-    comunas = get_data("comuna")
+    comunas_csv = get_data("comuna")
 
     # quitamos las tuplas repetidas
     data_no_repetidos = []
-    for fila in lineas:
-        tupla = (fila[4].split(',')[1], fila[4].split(',')[0])
+
+    # direcciones clientes
+    for cliente in clientes_csv:
+        for comuna in comunas_csv:
+            if cliente[5] == comuna[0]:
+                tupla = (comuna[1], cliente[4])
+                if tupla not in data_no_repetidos:
+                    data_no_repetidos.append(tupla)
+
+    # direcciones sucursales
+    for sucursal in restaurantes_csv:
+        tupla = (sucursal[7], sucursal[5])
         if tupla not in data_no_repetidos:
             data_no_repetidos.append(tupla)
+
+
 
     print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
@@ -38,35 +51,11 @@ def load() -> None:
             subidos += 1
             conn.commit()
         except psy2.Error as e:
-            print(f"calle: {dato[1]} se sobrepasa del limite de 30 caracteres")
+            print(e)
             conn.rollback()
             tuplas_malas.append(dato)
-    a = 0
-    if tuplas_malas:
-        try:
-            cur.execute(
-                "ALTER TABLE direccion ALTER COLUMN calle TYPE VARCHAR(60);")
-            print("Tabla direccion: calle VARCHAR(30) to calle VARCHAR(60)")
-            conn.commit()
-            a += 1
-        except psy2.Error as e:
-            conn.rollback()
-            print("Error al modificar la tabla:", e)
-
-        for dato in tuplas_malas:
-            try:
-                cur.execute(insert_query, dato)
-                subidos += 1
-            except psy2.Error as e:
-                conn.rollback()
-                print("Error al reintentar insertar la tupla:", dato)
-                print(e)
-                no_subidos += 1
-
     conn.commit()
     cur.close()
     conn.close()
-
-    print(f'Tuplas malas corregidas: {a}')
     print(f"Total subidos: {subidos}")
     print(f"Total no subidos: {no_subidos}")
