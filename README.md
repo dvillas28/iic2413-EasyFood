@@ -7,7 +7,7 @@ Al momento de la entrega del proyecto, la base de datos se encuentra poblada con
 1. Ejecutar el siguente script 
 
     ```bash
-    python3 backend/clear_or_destroy_tables.py
+    python3 backend/clear_tables.py
     ```
 
     Y luego elegir la opcion `c` y luego `y`. Esta opcion borra toda la informacion de todas las tablas de la base de datos. Todas las tablas quedan vacias.
