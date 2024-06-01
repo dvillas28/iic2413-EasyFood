@@ -51,10 +51,17 @@ def get_query_result(query_dict: dict) -> dict:
         else:
             # estructurada, agregamos los argumentos
 
-            if query_type == 10:
-                args = f"%{args}%"
+            if query_type == 9:
+                args = [args, args]
+                args = tuple(args)
+                cur.execute(sql, args)
 
-            cur.execute(sql, tuple([args]))
+            else:
+
+                if query_type == 10:
+                    args = f"%{args}%"
+
+                cur.execute(sql, tuple([args]))
 
         labels = (desc[0] for desc in cur.description)
         rows = cur.fetchall()

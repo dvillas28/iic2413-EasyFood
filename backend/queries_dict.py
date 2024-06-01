@@ -10,7 +10,7 @@ queries = {
     6: 'SELECT DISTINCT restaurant.nombre FROM restaurant JOIN distribuye_a ON restaurant.nombre = distribuye_a.restaurant_nombre JOIN suscrito ON distribuye_a.delivery_telefono = suscrito.delivery_telefono WHERE suscrito.usuario_email = %s;',
     7: 'SELECT usuario_email, SUM(precio) FROM realiza JOIN pedido ON realiza.pedido_id = pedido.id JOIN menu ON pedido.id = menu.pedido_id LEFT JOIN suscrito ON realiza.usuario_email = suscrito.usuario_email WHERE suscrito.usuario_email IS NULL GROUP BY usuario_email;',
     8: 'SELECT plato.nombre, restaurante.nombre FROM plato JOIN menu ON plato.id = menu.plato_id JOIN restaurante ON menu.restaurante_nombre = restaurante.nombre ORDER BY plato.nombre ASC;',  # FUNCIONA
-    9: 'SELECT * FROM evalua JOIN pedido ON plato.id = menu.plato_id WHERE eval_despachador >= valor_ingresado_por_usuario OR eval_cliente >= %s;',
+    9: 'SELECT pedido.id AS id_del_pedido, pedido.eval_cliente AS Evaluacion_del_cliente, evalua.eval_despachador AS Evaluacion_del_despachador FROM pedido JOIN evalua ON evalua.pedido_id = pedido.id JOIN Despachador ON evalua.despachador_telefono = despachador.telefono WHERE pedido.eval_cliente >= %s AND evalua.eval_despachador >= %s ORDER BY pedido.id ASC;',  # FUNCIONA
     10: "SELECT nombre FROM plato WHERE ingredientes LIKE %s;",  # FUNCIONA
 }
 
