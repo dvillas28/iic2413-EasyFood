@@ -5,7 +5,7 @@ from archivos import get_data
 
 def load() -> None:
 
-    print(f'\n ---- Cargando datos de la tabla Direccion ---- \n')
+    print(f'\n ---- Cargando datos de la tabla Localizado_en ---- \n')
 
     # cargar los datos brutos
     restaurantes_csv = get_data("restaurantes")
@@ -16,7 +16,6 @@ def load() -> None:
         tupla = (sucursal[6], sucursal[5], sucursal[7])
         if tupla not in data_no_repetidos:
             data_no_repetidos.append(tupla)
-
 
     print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
@@ -38,13 +37,19 @@ def load() -> None:
             conn.commit()
         except psy2.Error as e:
             print(e)
-            no_subidos+=1
+            no_subidos += 1
             conn.rollback()
             tuplas_malas.append(dato)
+
+    print(f'\nSubidas correctamente: {subidos} tuplas')
+
+    if tuplas_malas:
+        print(f'No subidas: {len(tuplas_malas)} tuplas')
 
     conn.commit()
     cur.close()
     conn.close()
 
-    print(f"Total subidos: {subidos}")
-    print(f"Total no subidos: {no_subidos}")
+
+if __name__ == "__main__":
+    load()

@@ -30,8 +30,6 @@ def load() -> None:
         if tupla not in data_no_repetidos:
             data_no_repetidos.append(tupla)
 
-
-
     print(f'Existen en total {len(data_no_repetidos)} tuplas a subir')
 
     conn = psy2.connect(**p.conn_params)
@@ -54,8 +52,16 @@ def load() -> None:
             print(e)
             conn.rollback()
             tuplas_malas.append(dato)
+
+    print(f'\nSubidas correctamente: {subidos} tuplas')
+
+    if tuplas_malas:
+        print(f'No subidas: {len(tuplas_malas)} tuplas')
+
     conn.commit()
     cur.close()
     conn.close()
-    print(f"Total subidos: {subidos}")
-    print(f"Total no subidos: {no_subidos}")
+
+
+if __name__ == "__main__":
+    load()

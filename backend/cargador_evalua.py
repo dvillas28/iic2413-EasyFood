@@ -5,13 +5,13 @@ from archivos import get_data
 
 def load() -> None:
 
-    print(f'\n ---- Cargando datos de la tabla Realiza ---- \n')
+    print(f'\n ---- Cargando datos de la tabla Evalua ---- \n')
 
     # cargar los datos brutos
     calificacion_csv = get_data("calificacion")
     cldeldes_csv = get_data("cldeldes")
     pedidos_csv = get_data("pedidos")
-    
+
     # quitamos las tuplas repetida
     data_no_repetidos = []
     for pedido in pedidos_csv:
@@ -29,7 +29,8 @@ def load() -> None:
                 break
         else:
             eval_despachador = None
-        tupla = (pedido[0], despachador_telefono, delivery_telefono, eval_despachador)
+        tupla = (pedido[0], despachador_telefono,
+                 delivery_telefono, eval_despachador)
         if tupla not in data_no_repetidos:
             data_no_repetidos.append(tupla)
 
@@ -53,14 +54,19 @@ def load() -> None:
             conn.commit()
         except psy2.Error as e:
             print(e)
-            no_subidos+=1
+            no_subidos += 1
             conn.rollback()
             tuplas_malas.append(dato)
 
     print(f'\nSubidas correctamente: {subidos} tuplas')
+
+    if tuplas_malas:
+        print(f'No subidas: {len(tuplas_malas)} tuplas')
+
     conn.commit()
     cur.close()
     conn.close()
 
-    print(f"Total subidos: {subidos} tuplas")
-    print(f"Total no subidos: {no_subidos} tuplas")
+
+if __name__ == "__main__":
+    load()

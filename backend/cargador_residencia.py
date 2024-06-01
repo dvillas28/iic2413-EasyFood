@@ -12,7 +12,6 @@ def load() -> None:
 
     comunas_csv = get_data("comuna")
 
-
     # quitamos las tuplas repetida
     data_no_repetidos = []
     for cliente in clientes_csv:
@@ -43,15 +42,19 @@ def load() -> None:
         except psy2.Error as e:
             print(e)
             print(dato)
-            no_subidos+=1
+            no_subidos += 1
             conn.rollback()
             tuplas_malas.append(dato)
 
     print(f'\nSubidas correctamente: {subidos} tuplas')
 
+    if tuplas_malas:
+        print(f'No subidas: {len(tuplas_malas)} tuplas')
+
     conn.commit()
     cur.close()
     conn.close()
 
-    print(f"Total subidos: {subidos} tuplas")
-    print(f"Total no subidos: {no_subidos} tuplas")
+
+if __name__ == "__main__":
+    load()

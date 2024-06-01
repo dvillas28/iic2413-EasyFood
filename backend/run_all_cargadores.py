@@ -5,14 +5,14 @@ import cargador_delivery as delivery
 import cargador_plato as plato
 import cargador_restaurante as restaurante
 import cargador_sucursal as sucursal
-# TODO import cargador_direccion as direccion
+import cargador_direccion as direccion
 import cargador_realiza as realiza
-# TODO import cargador_evalua as evalua
-# TODO import cargador_residencia as residencia
+import cargador_evalua as evalua
+import cargador_residencia as residencia
 import cargador_suscrito as suscrito
 import cargador_trabaja as trabaja
-# TODO import cargador_distribuye_a as distribuye_a
-# TODO import cargador_localizado_en as localizado_en
+import cargador_distribuye_a as distribuye_a
+import cargador_localizado_en as localizado_en
 import cargador_de as de
 import cargador_menu as menu
 import cargador_contiene as contiene
@@ -26,14 +26,14 @@ if __name__ == '__main__':
     plato.load()  # 6.
     restaurante.load()  # 7.
     sucursal.load()  # 8.
-    # direccion.load()  # 9.
+    direccion.load()  # 9.
     realiza.load()  # 10.
-    # evalua.load()  # 11.
-    # residencia.load()  # 12.
+    evalua.load()  # 11.
+    residencia.load()  # 12.
     suscrito.load()  # 13.
     trabaja.load()  # 14.
-    # distribuye_a.load()  # 15.
-    # localizado_en.load()  # 16.
+    distribuye_a.load()  # 15.
+    localizado_en.load()  # 16.
     de.load()  # 17.
     menu.load()  # 18.
     contiene.load()  # 19.
