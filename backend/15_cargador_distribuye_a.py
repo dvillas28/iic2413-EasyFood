@@ -3,23 +3,29 @@ import params as p
 from archivos import get_data
 
 # cargar los datos brutos
-lineas1 = get_data("pedidos")
-lineas2 = get_data("platos")
+pedidos_csv = get_data("pedidos")
+platos_csv = get_data("platos")
+cldeldes_csv = get_data("cldeldes")
 
 # quitamos las tuplas repetidas
 data_no_repetidos = []
-for fila in lineas1:
-    for i in lineas2:
-        if i[0] == fila[0]:
-            dato = (...)
-            if dato not in data_no_repetidos:
-                data_no_repetidos.append(dato)
+for pedido in pedidos_csv:
+    for delivery in cldeldes_csv:
+        if delivery[4] == pedido[2]:
+            delivery_telefono = delivery[6]
+            break
+    for plato in pedido[4]:
+        for plato_csv in platos_csv:
+            if plato == plato_csv[0]:
+                tupla = (delivery_telefono, plato_csv[10])
+                if tupla not in data_no_repetidos:
+                    data_no_repetidos.append(tupla)
 
 conn = psy2.connect(**p.conn_params)
 cur = conn.cursor()
 
 insert_query = """
-    INSERT INTO distribuye_a (delivery_telefono, restaurant_nombre) VALUES (%s, %s);
+    INSERT INTO distribuye_a (delivery_telefono, restaurante_nombre) VALUES (%s, %s);
 """
 
 subidos = 0
