@@ -24,7 +24,7 @@ table_scheme = [
 	hora TIME WITH TIME ZONE NOT NULL,
 	fecha DATE NOT NULL,
 	PRIMARY KEY (id),
-	CHECK (1 <= eval_clienteAND eval_cliente <= 5),
+	CHECK (1 <= eval_cliente AND eval_cliente <= 5),
 	CHECK (estado IN ('pendiente', 'en preparacion', 'entregado a despachador', 'entregado a cliente', 'cliente cancela', 'delivery cancela', 'restaurant cancela')));
   """,
     """
@@ -44,7 +44,7 @@ table_scheme = [
 	precio_sus_anual INTEGER,
 	PRIMARY KEY (telefono),
 	CHECK (precio_sus_mensual <= 4 * precio_unitario_despacho),
-	CHECK (precio_sus_anual <= 4 * precio_unitario_despacho));
+	CHECK (precio_sus_anual <= 12 * precio_sus_mensual));
   """,
     """
   CREATE TABLE plato(
@@ -79,7 +79,7 @@ table_scheme = [
     """
   CREATE TABLE realiza(
   pedido_id INTEGER NOT NULL,
-	usuario_email VARCHAR(30) NOT NULL,
+	usuario_email VARCHAR(40) NOT NULL,
 	FOREIGN KEY (pedido_id) REFERENCES Pedido(id),
 	FOREIGN KEY (usuario_email) REFERENCES Usuario(email)); 
   """,
@@ -96,7 +96,7 @@ table_scheme = [
   """,
     """
   CREATE TABLE residencia(
-	usuario_email VARCHAR(30) NOT NULL,
+	usuario_email VARCHAR(40) NOT NULL,
 	direccion_calle VARCHAR(80) NOT NULL,
 	direccion_comuna VARCHAR(30) NOT NULL,
 	FOREIGN KEY (usuario_email) REFERENCES Usuario(email),
@@ -131,8 +131,8 @@ table_scheme = [
   """,
     """
   CREATE TABLE localizado_en(
-  sucursal_telefono CHAR(30) NOT NULL,
-  direccion_calle VARCHAR(30) NOT NULL,
+  sucursal_telefono VARCHAR(20) NOT NULL,
+  direccion_calle VARCHAR(80) NOT NULL,
   direccion_comuna VARCHAR(30) NOT NULL,
   FOREIGN KEY (sucursal_telefono) REFERENCES Sucursal(telefono),
   FOREIGN KEY (direccion_calle, direccion_comuna) REFERENCES Direccion(calle, comuna)); 

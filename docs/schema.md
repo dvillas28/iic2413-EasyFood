@@ -65,7 +65,7 @@ Delivery(
 	precio_sus_anual INTEGER,
 	PRIMARY KEY (telefono),
 	CHECK (precio_sus_mensual <= 4 * precio_unitario_despacho)	
-	CHECK (precio_sus_anual <= 4 * precio_unitario_despacho)	
+	CHECK (precio_sus_anual <= 12 * precio_sus_mensual)	
 )
 ```
 
@@ -116,7 +116,7 @@ Direccion(
 ```sql
 Realiza(
 	pedido_id INTEGER NOT NULL,
-	usuario_email VARCHAR(30) NOT NULL,
+	usuario_email VARCHAR(40) NOT NULL,
 	FOREIGN KEY (pedido_id) REFERENCES Pedido(id),
 	FOREIGN KEY (usuario_email) REFERENCES Usuario(email)
 )
@@ -139,7 +139,7 @@ Evalua(
 ### 12. Residencia
 ```sql
 Residencia(
-	usuario_email VARCHAR(30) NOT NULL,
+	usuario_email VARCHAR(40) NOT NULL,
 	direccion_calle VARCHAR(80) NOT NULL,
 	direccion_comuna VARCHAR(30) NOT NULL,
 	FOREIGN KEY (usuario_email) REFERENCES Usuario(email),
@@ -187,7 +187,7 @@ Distribuye_a(
 ### 16. Localizado_en
 ```sql
 Localizado_en(
-	sucursal_telefono CHAR(11) NOT NULL,
+	sucursal_telefono VARCHAR(20) NOT NULL,
 	direccion_calle VARCHAR(80) NOT NULL,
 	direccion_comuna VARCHAR(30) NOT NULL,
 	FOREIGN KEY (sucursal_telefono) REFERENCES Sucursal(telefono),

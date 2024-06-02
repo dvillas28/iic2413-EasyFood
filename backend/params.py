@@ -3,5 +3,5 @@ conn_params = {
     "user": "grupo15",
     "host": "pavlov.ing.puc.cl",
     "port": 5432,
-    "password": "putobdd"
+    "password": "ddbotup"
 }

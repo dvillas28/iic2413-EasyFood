@@ -13,21 +13,23 @@ conn = psycopg2.connect(**p.conn_params)
 # Crear un cursor
 cur = conn.cursor()
 
-print('d: DELETE - Borra todas las tablas')
-response = input("Selecciona la accion a ejecutar (d/c): ")
+print('DELETE - Borra todas las tablas')
+response = input('Se borraran TODAS LAS TABLAS. ¿Estas seguro? (y/n): ')
+if response != 'y':
+    print('Operación cancelada.')
 
-if response.lower() == 'd':
-    response = input('Se borraran TODAS LAS TABLAS. ¿Estas seguro? (y/n): ')
-    if response != 'y':
-        print('Operación cancelada.')
-
-    elif response == 'y':
-        print('Borrando tablas...')
-        # Generar y ejecutar los comandos TRUNCATE TABLE
-        for table in table_names:
-            truncate_query = f'DROP TABLE {table} CASCADE;'
+elif response == 'y':
+    print('Borrando tablas...')
+    # Generar y ejecutar los comandos TRUNCATE TABLE
+    for table in table_names:
+        truncate_query = f'DROP TABLE {table} CASCADE;'
+        try:
             cur.execute(truncate_query)
             print(f'Table {table} deleted.')
+            conn.commit()
+        except psycopg2.errors.UndefinedTable:
+            conn.rollback()
+            continue
 
 else:
     print('input no identificado. operación cancelada.')

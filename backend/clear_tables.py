@@ -13,22 +13,20 @@ conn = psycopg2.connect(**p.conn_params)
 # Crear un cursor
 cur = conn.cursor()
 
-print('c: CLEAN - Borra todos los datos de todas las tablas')
-response = input("Selecciona la accion a ejecutar (c): ")
+print('CLEAN - Borra todos los datos de todas las tablas')
 
-if response.lower() == 'c':
-    response = input(
-        'Se borraran los datos de todas las tablas. ¿Estas seguro? (y/n): ')
-    if response != 'y':
-        print('Operación cancelada.')
+response = input(
+    'Se borraran los datos de todas las tablas. ¿Estas seguro? (y/n): ')
+if response != 'y':
+    print('Operación cancelada.')
 
-    elif response == 'y':
-        print('Borrando datos de las tablas...')
-        # Generar y ejecutar los comandos DELETE FROM
-        for table in table_names:
-            delete_query = f'DELETE FROM {table};'
-            cur.execute(delete_query)
-            print(f'Data from table {table} cleaned.')
+elif response == 'y':
+    print('Borrando datos de las tablas...')
+    # Generar y ejecutar los comandos DELETE FROM
+    for table in table_names:
+        delete_query = f'DELETE FROM {table};'
+        cur.execute(delete_query)
+        print(f'Data from table {table} cleaned.')
 
 else:
     print('input no identificado. operación cancelada.')
