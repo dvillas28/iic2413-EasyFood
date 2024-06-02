@@ -140,3 +140,4 @@ def error():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    # app.run(debug=True, host='pavlov.ing.puc.cl', port=8015) # para correr en pavlov
