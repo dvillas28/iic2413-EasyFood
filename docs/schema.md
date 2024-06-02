@@ -36,7 +36,7 @@ Pedido(
 	hora TIME WITH TIME ZONE NOT NULL,
 	fecha DATE NOT NULL,
 	PRIMARY KEY (id),
-	CHECK (eval_cliente >= 1 AND eval_cliente <= 5),
+	CHECK (1 <= eval_cliente AND eval_cliente <= 5),
 	CHECK (estado IN ('pendiente', 'en preparación', 'entregado a
     despachador', 'entregado a cliente', 'cliente cancela', 'delivery
     cancela', 'restaurant cancela'))
@@ -65,6 +65,7 @@ Delivery(
 	precio_sus_anual INTEGER,
 	PRIMARY KEY (telefono),
 	CHECK (precio_sus_mensual <= 4 * precio_unitario_despacho)	
+	CHECK (precio_sus_anual <= 4 * precio_unitario_despacho)	
 )
 ```
 
@@ -106,7 +107,7 @@ Sucursal(
 ```sql
 Direccion(
 	comuna VARCHAR(30) NOT NULL,
-	calle VARCHAR(60) NOT NULL,
+	calle VARCHAR(80) NOT NULL,
 	PRIMARY KEY (comuna, calle)
 )
 ```
@@ -128,7 +129,7 @@ Evalua(
 	despachador_telefono CHAR(11) NOT NULL,
 	delivery_telefono CHAR(11) NOT NULL,
 	eval_despachador INTEGER,
-	CHECK (eval_despachador >= 1 AND eval_despachador <=5),
+	CHECK (1 <= eval_despachador AND eval_despachador <=5),
 	FOREIGN KEY (pedido_id) REFERENCES Pedido(id),
     FOREIGN KEY (despachador_telefono) REFERENCES Despachador(telefono),
     FOREIGN KEY (delivery_telefono) REFERENCES Delivery(telefono)
@@ -139,7 +140,7 @@ Evalua(
 ```sql
 Residencia(
 	usuario_email VARCHAR(30) NOT NULL,
-	direccion_calle VARCHAR(30) NOT NULL,
+	direccion_calle VARCHAR(80) NOT NULL,
 	direccion_comuna VARCHAR(30) NOT NULL,
 	FOREIGN KEY (usuario_email) REFERENCES Usuario(email),
     FOREIGN KEY (direccion_calle, direccion_comuna) REFERENCES Direccion(calle, comuna)
@@ -216,7 +217,7 @@ Menu(
 	descripcion VARCHAR NOT NULL,
 	precio INTEGER NOT NULL,
 	CHECK (porcion >= 1),
-	CHECK (tiempo_preparacion >= 1 AND tiempo_preparacion <= 60),
+	CHECK (1 <= tiempo_preparacion AND tiempo_preparacion <= 60),
     FOREIGN KEY (plato_id) REFERENCES Plato(id),
     FOREIGN KEY (restaurant_nombre) REFERENCES Restaurante(nombre)
 )

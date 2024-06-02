@@ -18,14 +18,14 @@ Al momento de la entrega del proyecto, la base de datos se encuentra poblada con
     python3 backend/run_all_cargadores.py
     ```
 
-    Este script toma carga todos los archivos `.csv` ubicados en el directorio `/backend/data` y ejecuta los cargadores para poblar con datos a todas las tablas.
+    Este script toma carga todos los archivos `.csv` ubicados en el directorio `/backend/data` y ejecuta los cargadores para poblar con datos a todas las tablas de la base de datos.
 
-Si el ayudante tiene que cargar nuevos datos para corregir la entrega, es cosa de reemplazar los viejos por los nuevos en el directorio `backend/data`, limpiar las tablas y ejecutar los cargadores de nuevo.
+Si el ayudante tiene que cargar nuevos datos para corregir la entrega, es cosa de reemplazar los viejos por los nuevos en el directorio `backend/data`, limpiar las tablas (paso 1.) y ejecutar los cargadores de nuevo (paso 2.).
 
 
 ## Instrucciones ejecución Pagina Web
 
-Colocarse en la ruta `/home/grupo15/EasyFood` y ejecutar el siguente comando en la terminal
+Colocarse en la ruta `/home/grupo15/EasyFood` y ejecutar el siguente comando en la terminal para activar el ambiente de Python
 
 ```bash
 source venv/bin/activate
