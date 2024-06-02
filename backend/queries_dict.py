@@ -3,7 +3,7 @@ queries = {
     0.0: {'SELECT': 'SELECT', 'FROM': 'FROM'},
     0.1: {'SELECT': 'SELECT', 'FROM': 'FROM', 'WHERE': 'WHERE'},
     1: 'SELECT DISTINCT Restaurante.nombre FROM Restaurante JOIN Menu ON Restaurante.nombre = Menu.restaurante_nombre JOIN Plato ON Plato.id = Menu.plato_id WHERE Plato.nombre = %s;',  # FUNCIONA
-    2: 'SELECT DISTINCT pedido.id FROM  usuario JOIN realiza ON usuario.email = realiza.usuario_email JOIN pedido ON realiza.pedido_id = pedido.id WHERE pedido.estado = %s AND usuario.email = %s;', 
+    2: 'SELECT pedido.id, SUM(menu.precio) FROM usuario JOIN realiza ON usuario.email = realiza.usuario_email JOIN pedido ON realiza.pedido_id = pedido.id JOIN contiene ON contiene.pedido_id = pedido.id JOIN menu ON contiene.plato_id = menu.plato_id WHERE pedido.estado = %s AND usuario.email = %s GROUP BY pedido.id;', 
     3: 'SELECT pedido.id, SUM(menu.precio) FROM plato JOIN menu ON plato.id = menu.plato_id JOIN contiene ON plato.id = contiene.plato_id JOIN restaurante ON restaurante.nombre = contiene.restaurante_nombre JOIN pedido ON pedido.id = contiene.pedido_id WHERE restaurante.nombre = menu.restaurante_nombre GROUP BY pedido.id;',  # FUNCIONA
     4: 'SELECT DISTINCT plato.nombre AS plato, restaurante.nombre AS restaurante, delivery.nombre AS delivery FROM plato JOIN menu ON plato.id = menu.plato_id JOIN restaurante ON menu.restaurante_nombre = restaurante.nombre JOIN distribuye_a  ON restaurante.nombre = distribuye_a.restaurante_nombre  JOIN delivery ON distribuye_a.delivery_telefono = delivery.telefono WHERE plato.estilo = %s;', #FUNCIONA 
     5: 'SELECT nombre, restriccion FROM Plato WHERE estilo = %s;',  # FUNCIONA
