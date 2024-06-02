@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='more_styles.css') }}">
     <title>Consulta No Válida</title>
 </head>
 
 <body>
     <h1>Consulta No Válida</h1>
-    Error: {{ err['error_type'] }}<br>
-    Causa: {{ err['message'] }}<br>
+    <div>
+        Error: {{ err['error_type'] }}<br>
+        Causa: {{ err['message'] }}<br>
+
+    </div>
 </body>
 
 </html>

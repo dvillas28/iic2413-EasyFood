@@ -1,5 +1,19 @@
-/* Estilos para index.html*/
+/* Estilos para index.html */
+
 /*Si se motivan, pueden hacerlo mas bonito*/
+h1 {
+    color: #007bff;
+    text-align: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+
 .form {
     max-width: 400px;
     margin: 0 auto;
@@ -22,7 +36,7 @@ input[type="text"] {
 }
 
 .form-button {
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -31,5 +45,5 @@ input[type="text"] {
 }
 
 .form-button:hover {
-    background-color: #45a049;
+    background-color: #0056b3;
 }

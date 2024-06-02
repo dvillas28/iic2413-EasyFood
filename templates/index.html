@@ -4,17 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu SQL</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Menu principal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='more_styles.css') }}">
 </head>
 
 <body>
 
     <h1>Pagina Principal SQL</h1>
 
-    <a href="{{ url_for('consultas_estruct')}}">Menu de consultas</a>
-    <a href="{{ url_for('consultas_inestruct')}}">Consultas Inestructuradas</a>
-
+    <div class="buttons">
+        <a href="{{ url_for('consultas_estruct')}}">Menu de consultas predefinidas</a>
+        <a href="{{ url_for('consultas_inestruct')}}">Consultas Inestructuradas</a>
+    </div>
 
 </body>
 
