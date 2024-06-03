@@ -44,6 +44,15 @@ def get_query_result(query_dict: dict) -> dict:
     cur = conn.cursor()
 
     try:
+        if query_type not in [3, 7, 8]:
+            if not any(map(lambda kword: kword in ''.join(args) or kword.lower() in ''.join(args), q.harmful_sql_keywords)):
+                pass
+            else:
+                return {
+                    'result': 0,
+                    'error_type': 'SQLInjection',
+                    'error': 'Se ha detectado un intento de inyección SQL en la consulta.'
+                }
 
         if type(query_type) == float:  # inestructurada, la consulta ya esta creada
             cur.execute(query)

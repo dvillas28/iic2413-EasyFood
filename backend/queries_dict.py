@@ -19,5 +19,10 @@ harmful_sql_keywords = (
     ';CREATE TABLE', ';CREATE DATABASE', ';TRUNCATE', ';REPLACE',
     ';GRANT', ';REVOKE', ';COMMIT', ';ROLLBACK', ';SAVEPOINT',
     ';LOCK TABLE', ';UNLOCK TABLES', ';SET TRANSACTION',
-    ';SHOW DATABASES', ';SHOW TABLES', ';--', ';#'
+    ';SHOW DATABASES', ';SHOW TABLES', ';--', ';#',
+    '; DROP', '; DELETE', '; UPDATE', '; INSERT INTO', '; ALTER TABLE',
+    '; CREATE TABLE', '; CREATE DATABASE', '; TRUNCATE', '; REPLACE',
+    '; GRANT', '; REVOKE', '; COMMIT', '; ROLLBACK', '; SAVEPOINT',
+    '; LOCK TABLE', '; UNLOCK TABLES', '; SET TRANSACTION',
+    '; SHOW DATABASES', '; SHOW TABLES', '; --', '; #'
 )
