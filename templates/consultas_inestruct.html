@@ -17,13 +17,13 @@
         <form action="{{ url_for('process_inestruct_query')}}" method="post" class="form">
 
             <label for="text1">SELECT</label><br>
-            <input type="text" id="text1" name="text1"><br>
+            <input type="text" id="text1" name="text1" placeholder="ej: *"><br>
 
             <label for="text2">FROM</label><br>
-            <input type="text" id="text2" name="text2"><br>
+            <input type="text" id="text2" name="text2" placeholder="ej: plato"><br>
 
             <label for="text3">WHERE</label><br>
-            <input type="text" id="text3" name="text3"><br>
+            <input type="text" id="text3" name="text3" placeholder="condicion opcional, ej: id=3"><br>
 
             <input type="submit" value="Enviar Consulta" class="form-button">
         </form>
